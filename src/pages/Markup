@@ -1,0 +1,23 @@
+[h1]xxx[/h1]  标题
+[h2]xxx[/h2]  标题
+[h3]xxx[/h3]  标题
+
+[i]xxx[/i]  斜体
+
+[b]xxx[/b]  加粗
+
+[img]xxxurl[/img]  图片
+
+[list]  列表
+otherxxx
+[*]xxx  项
+[*]xxx  项
+otherxxx  其它元素
+[/list]
+
+[strike]xxx[/strike]  横杠
+
+[url=xxxx]  可点击的链接
+
+[quote]xxx[/quote]  引用(大方括号)
+

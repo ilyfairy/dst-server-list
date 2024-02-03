@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Don't Starve Together Server</title>
+    <meta name="description" content="饥荒联机版服务器列表" />
+    <meta
+      name="Keywords"
+      content="饥荒,饥荒联机版,服务器列表,dstserver,dstserverlist,Don't Starve Together Server List"
+    />
+    <meta name="qwq" content="QwQ" />
+  </head>
+
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+    <script>
+      if (window.Proxy == null) {
+        window.location.href = "https://dstserverlist.top/v1/";
+      }
+      if (localStorage.getItem("theme") == "dark") document.body.style.backgroundColor = "#121212";
+    </script>
+  </body>
+</html>

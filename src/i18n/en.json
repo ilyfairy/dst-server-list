@@ -1,0 +1,90 @@
+{
+  "404": {
+    "complete": "Complete",
+    "p1": "Your webpage encountered an issue and needs to be reloaded.",
+    "p2": "We'll wait for a moment and then reload for you.",
+    "access": "For more information about this issue and possible fixes, visit",
+    "call": "If you call a support person, give them this info",
+    "stopCode": "Stop code"
+  },
+  "title": "Don't Starve Together Server",
+  "close": "Close",
+  "home": {
+    "gotoApi": "goto api page",
+    "about": "About",
+    "lastUpdateTime": "Last Updated Time",
+    "sec": "seconds",
+    "meow": "Meow~",
+    "loading": "Loading...",
+    "itemsPerPage": "Items per page",
+    "serverList": "Server List",
+    "noData": "No Data",
+    "searchPlaceholder": {
+      "searchServer": "Search Server",
+      "searchPlayer": "Search Player"
+    },
+    "tableHeader": {
+      "serverName": "Server Name",
+      "connectionCount": "Connection",
+      "address": "Address",
+      "platform": "Platform",
+      "season": "Season",
+      "players": "Players",
+      "intentx": "Playstyle",
+      "gamemode": "GameMode"
+    },
+    "copyConnectionCode": "Connection code copied",
+    "searchPlayer": "Search for players",
+    "days": "Days",
+    "daysPre": "Days",
+    "history": "History",
+    "daysMix": "Day {0}",
+    "searchTags": "Search Tags"
+  },
+  "api": {
+    "gotoHome": "goto home page",
+    "fetchApi": "fetch API"
+  },
+  "dst": {
+    "description": "Description",
+    "prefab": "Prefab",
+    "modsName": "ModsName",
+    "dedicatedServer": "Dedicated",
+    "latestVersion": "Latest Version",
+    "noDescription": "[Not Description]",
+    "version": "Version",
+    "legacy": "Legacy",
+    "fo": "Friend Only",
+    "tags": "Tags",
+    "playerCountSuffix": "Players",
+    "serverCountSuffix": "Servers",
+    "playerCount": "Player Count",
+    "notSelected": "Not Selected",
+    "playerProfile": "Player Profile",
+    "playerHistory": "History",
+    "searchPrefab": "Search Prefab",
+    "workshopLink": "View Workshop",
+    "privateNetwork": "Private Network",
+    "networkType": "Network Type",
+    "publicNetwork": "Public Network",
+    "allowNewPlayer": "Allow New Player",
+    "friendsOnly": "Friends Only",
+    "serverPaused": "Server Paused",
+    "steamGroup": "Steam Group",
+    "modestyle": "ModeStyle",
+    "worldLevel": "World Level"
+  },
+  "unknown": "Unknown",
+  "other": "Other",
+  "notFound": "Not Found",
+  "refresh": "Refresh",
+  "none": "None",
+  "info": "Information",
+  "server": "Server",
+  "mods": "Mods",
+  "search": "Search",
+  "setting": {
+    "customFont": "Custom Font",
+    "setting": "Settings"
+  }
+}

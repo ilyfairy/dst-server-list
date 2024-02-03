@@ -1,0 +1,90 @@
+{
+  "404": {
+    "complete": "完成",
+    "p1": "你的网页遇到问题, 需要重新加载。",
+    "p2": "我们只等待一会儿, 然后为你重新加载。",
+    "access": "有关此问题的详细信息和可能的解决方法, 请访问",
+    "call": "如果致电支持人员, 请向他们提供一下信息",
+    "stopCode": "终止代码"
+  },
+  "title": "饥荒联机版服务器",
+  "close": "关闭",
+  "home": {
+    "gotoApi": "去API页面",
+    "about": "关于",
+    "lastUpdateTime": "最后更新时间",
+    "sec": "秒",
+    "meow": "喵喵喵~",
+    "loading": "加载中...",
+    "itemsPerPage": "每页数目",
+    "serverList": "服务器列表",
+    "noData": "没有数据",
+    "searchPlaceholder": {
+      "searchServer": "搜索服务器",
+      "searchPlayer": "搜索玩家"
+    },
+    "tableHeader": {
+      "serverName": "服务器名",
+      "connectionCount": "连接数",
+      "address": "地址",
+      "platform": "平台",
+      "season": "季节",
+      "players": "玩家",
+      "intentx": "风格",
+      "gamemode": "游戏模式"
+    },
+    "copyConnectionCode": "已复制直连代码",
+    "searchPlayer": "搜索玩家",
+    "days": "天",
+    "daysPre": "天数",
+    "history": "历史记录",
+    "daysMix": "第{0}天",
+    "searchTags": "搜索标签"
+  },
+  "api": {
+    "gotoHome": "去主页",
+    "fetchApi": "请求API"
+  },
+  "dst": {
+    "description": "描述",
+    "prefab": "角色",
+    "modsName": "模组名称",
+    "dedicatedServer": "专用服务器",
+    "latestVersion": "最新版本",
+    "noDescription": "[无描述]",
+    "version": "版本",
+    "legacy": "旧版",
+    "fo": "仅允许好友加入",
+    "tags": "标签",
+    "playerCountSuffix": "个玩家",
+    "serverCountSuffix": "个服务器",
+    "playerCount": "玩家个数",
+    "notSelected": "未选择",
+    "playerProfile": "玩家主页",
+    "searchPrefab": "搜索角色",
+    "playerHistory": "玩家历史",
+    "workshopLink": "浏览创意工坊",
+    "privateNetwork": "内网",
+    "networkType": "网络类型",
+    "publicNetwork": "公网",
+    "allowNewPlayer": "允许新玩家加入",
+    "friendsOnly": "仅限好友",
+    "serverPaused": "世界已暂停",
+    "steamGroup": "Steam群组",
+    "modestyle": "模式风格",
+    "worldLevel": "世界层级"
+  },
+  "unknown": "未知",
+  "other": "其他",
+  "notFound": "找不到",
+  "refresh": "刷新",
+  "none": "无",
+  "info": "信息",
+  "server": "服务器",
+  "mods": "模组",
+  "search": "搜索",
+  "setting": {
+    "customFont": "自定义字体",
+    "setting": "设置"
+  }
+}

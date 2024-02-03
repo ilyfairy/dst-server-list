@@ -1,0 +1,28 @@
+@font-face {
+  font-family: "Torus";
+  src: url("/fonts/TorusRegular.OTF"); // osu使用的字体
+}
+
+@font-face {
+  font-family: "dst emoji";
+  src: url("/fonts/dst_emoji.woff2"); // dst的emoji字体
+  font-display: swap;
+}
+
+:root {
+  --font-dst: "dst emoji";
+  --font-default: "Torus"; // 全局可设置的字体
+  --font-global: var(--font-default), var(--font-dst); // 需要应用的字体
+}
+
+html {
+  font-family: var(--font-global) !important;
+}
+
+input {
+  font-family: var(--font-global) !important;
+}
+
+.no-data-text {
+  color: gray;
+}

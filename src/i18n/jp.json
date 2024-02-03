@@ -1,0 +1,87 @@
+{
+  "404": {
+    "complete": "完了",
+    "p1": "ウェブページに問題が発生し、再読み込みが必要です",
+    "p2": "しばらくお待ちいただいた後、再読み込みいたします",
+    "access": "この問題の詳細情報と可能な修正方法については、以下をご覧ください",
+    "call": "サポート担当者にお電話でお問い合わせの際は、以下の情報をお知らせください",
+    "stopCode": "停止コード"
+  },
+  "title": "ドント・スターブ・トゥギャザーサーバー",
+  "close": "閉じる",
+  "home": {
+    "gotoApi": "API ページへ移動",
+    "about": "について",
+    "lastUpdateTime": "最終更新時刻",
+    "sec": "秒",
+    "meow": "Nya~",
+    "loading": "読み込み中...",
+    "itemsPerPage": "ページごとのアイテム数",
+    "serverList": "サーバーリスト",
+    "noData": "データなし",
+    "searchPlaceholder": {
+      "searchServer": "サーバーを検索",
+      "searchPlayer": "プレイヤーを検索"
+    },
+    "tableHeader": {
+      "serverName": "サーバー名",
+      "connectionCount": "接続数",
+      "address": "アドレス",
+      "platform": "プラットフォーム",
+      "season": "季節",
+      "players": "プレイヤー",
+      "intentx": "プレイスタイル",
+      "gamemode": "ゲームモード"
+    },
+    "copyConnectionCode": "接続コードがコピーされました",
+    "searchPlayer": "プレイヤーを検索",
+    "days": "日",
+    "daysPre": "日",
+    "history": "アクセス履歴",
+    "daysMix": "第{0}日",
+    "searchTags": "検索タグ"
+  },
+  "api": {
+    "gotoHome": "ホームページへ移動",
+    "fetchApi": "API を取得"
+  },
+  "dst": {
+    "description": "説明",
+    "prefab": "Prefab",
+    "modsName": "ModsName",
+    "dedicatedServer": "専用サーバー",
+    "latestVersion": "最新バージョン",
+    "noDescription": "[説明なし]",
+    "version": "Version",
+    "legacy": "レガシー",
+    "fo": "フレンドオンリー",
+    "tags": "Tags",
+    "playerCountSuffix": "人のプレイヤー",
+    "serverCountSuffix": "台のサーバー",
+    "playerCount": "Player Count",
+    "notSelected": "未選択",
+    "playerProfile": "プレイヤープロフィール",
+    "playerHistory": "プレイヤー履歴",
+    "searchPrefab": "キャラクター検索",
+    "workshopLink": "View Workshop",
+    "privateNetwork": "Private Network",
+    "allowNewPlayer": "新規プレイヤーを許可する",
+    "friendsOnly": "友達限定",
+    "serverPaused": "サーバーが一時停止中です",
+    "modestyle": "ModeStyle",
+    "worldLevel": "世界"
+  },
+  "unknown": "不明",
+  "other": "その他",
+  "notFound": "見つかりません",
+  "refresh": "更新",
+  "none": "无なし",
+  "info": "信息",
+  "server": "サーバー",
+  "mods": "Mods",
+  "search": "検索",
+  "setting": {
+    "customFont": "カスタムフォント",
+    "setting": "設定"
+  }
+}
