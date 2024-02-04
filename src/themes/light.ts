@@ -17,7 +17,9 @@ const light: ThemeDefinition = {
     "modinfo-background2": "#fbfecb", // 例如,边框颜色
     "modinfo-foreground1": "#1b2838",
     "modinfo-foreground2": "#616364", // #ACB2B8
-    "modinfo-link": "#1b2838", // 链接未点击时的颜色
+    "modinfo-link": "#5aa9d6", // 链接未点击时的颜色
+    "modinfo-link-hover": "#3676ff", // 链接悬浮时的颜色
+    "modinfo-title": "#1b2838" // h1 h2 h3
   },
   colors: {
     // 自定义前缀--v-theme的css变量

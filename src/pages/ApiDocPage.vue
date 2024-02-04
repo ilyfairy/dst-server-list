@@ -5,7 +5,7 @@
         width: '100vw',
         height: data.height,
       }"
-      :src="consts.ApiDocUrl"
+      :src="Consts.ApiDocUrl"
       frameborder="0"
       scrolling="no"
       ref="iframe"
@@ -17,7 +17,7 @@
 import { onUnmounted } from "vue";
 import { onMounted } from "vue";
 import { reactive, ref } from "vue";
-import consts from "@/store/consts";
+import Consts from "@/store/Consts";
 
 const iframe = ref<HTMLIFrameElement>();
 const data = reactive({

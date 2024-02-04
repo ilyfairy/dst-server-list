@@ -329,7 +329,7 @@ import * as api from "@/scripts/api";
 import { icon, translate } from "@/scripts/translate";
 import i18n from "@/i18n";
 import { computed } from "vue";
-import { OpenPlayerUrl, OpenModUrl, copy, GetSeasonDaysString, OpenSteamGroup } from "@/scripts/utils";
+import { OpenPlayerUrl, OpenModUrl, copy, GetSeasonDaysString, OpenSteamGroup, delay } from "@/scripts/utils";
 import PlayerCountTimeline from "./PlayerCountTimeline.vue";
 import webHash from "@/scripts/WebAttribute";
 import * as Names from "@/scripts/AttributeNames";
@@ -445,7 +445,7 @@ const emit = defineEmits<{
   // (event: "update:serverCardDataType", arg1: ServerCardDataType): void
 }>();
 
-//当检测是打开时, 就自动更新数据
+//当前dialog页面, 当检测是打开时, 就自动更新数据
 watch(
   () => props.isShow,
   async (newValue, oldValue) => {
@@ -456,6 +456,11 @@ watch(
     await Update();
   },
 );
+
+//ModInfo子页面
+watch(() => data.modinfoDialog.show, async (newValue, oldValue) => {
+  document.documentElement.style.overflow = newValue ? "hidden" : "auto";
+});
 
 async function Update(forceUpdate: boolean = false) {
   data.cts = new CancellationTokenSource();
@@ -677,11 +682,11 @@ function ShowModInfo(platform: Platform | number | null, mod: DstModInfo) {
   background-color: rgba(var(--v-dialog-card-bg));
 }
 
-//隐藏卡片的滚动条
-::-webkit-scrollbar {
-  width: 0px;
-  height: 0px;
-}
+// 隐藏卡片的滚动条
+// ::-webkit-scrollbar {
+//   width: 0px;
+//   height: 0px;
+// }
 
 //标签样式
 .label-box {

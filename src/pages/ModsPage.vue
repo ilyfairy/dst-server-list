@@ -105,6 +105,8 @@ const ui = reactive({
 watch(
   () => ui.dialog.show,
   show => {
+    document.documentElement.style.overflow = show ? "hidden" : "auto";
+
     // if (show) {
     //   if (history.state != null) {
     //     // 重复不通过'返回'关闭时, 确保不会污染history

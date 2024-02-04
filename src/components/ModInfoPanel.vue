@@ -368,10 +368,6 @@ function ResetOptions() {
   }
 }
 
-onUnmounted(() => {
-  data.cts.Cancel();
-  data.info = null;
-});
 
 function FormatDescription(description: string | null | undefined): string {
   if (description == null || description.length == 0) return "";
@@ -449,7 +445,11 @@ function FormatDescriptionInternal(description: string) {
   description = description.replaceAll(
     /\[url=(.*?)\](.*?)\[\/url\]/gi,
     '<a href="$1" class="steam-a" target="_black">$2</a>',
-  );
+  ); // [url=链接]文字[/url]
+  description = description.replaceAll(
+    /\[url=(.*?)\]/gi,
+    '<a href="$1" class="steam-a" target="_black">$1</a>',
+  ); // [url=链接]
 
   description = description.replaceAll(
     /\[img\](.*?)\[\/img\]/gi,
@@ -556,24 +556,29 @@ onMounted(async () => {
     }
   }
 });
+
+onUnmounted(() => {
+  data.cts.Cancel();
+  data.info = null;
+});
+
 </script>
 
 <style lang="scss" scoped>
 //隐藏卡片的滚动条
 ::-webkit-scrollbar {
-  width: 0px !important;
-  height: 0px !important;
+  // width: 20px !important;
+  // height: 20px !important;
 }
 
+//Steam浏览量
 .view-block {
   font-size: 19px;
 }
-
 .view-label {
   display: inline-block;
   margin-right: 5px;
 }
-
 .view-value {
   display: inline-block;
   color: #68B;
@@ -594,17 +599,17 @@ onMounted(async () => {
 //标题
 .steam-h1 {
   font-size: 35px;
-  color: #5aa9d6;
+  color: rgb(var(--v-modinfo-title));
   line-height: 1.15em;
 }
 .steam-h2 {
   font-size: 30px;
-  color: #5aa9d6;
+  color: rgb(var(--v-modinfo-title));
   line-height: 1.1em;
 }
 .steam-h3 {
   font-size: 25px;
-  color: #5aa9d6;
+  color: rgb(var(--v-modinfo-title));
   line-height: 1.1em;
 }
 
@@ -625,13 +630,13 @@ onMounted(async () => {
   text-decoration: none;
 }
 .steam-a:hover {
-  color: #5aa9d6;
+  color: rgb(var(--v-modinfo-link-hover));
 }
 .stam-a:visited {
   color: rgb(var(--v-modinfo-link));
 }
-.steam-a:active {
-  color: #5aa9d6;
+.steam-a:active { // 点击'时'的颜色
+  color: rgb(var(--v-modinfo-link-hover));
 }
 
 .steam-img {

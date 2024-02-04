@@ -16,6 +16,8 @@ const dark: ThemeDefinition = {
     "modinfo-foreground1": "#EEE",
     "modinfo-foreground2": "#ACB2B8", // #ACB2B8
     "modinfo-link": "#FFF", // 链接未点击时的颜色
+    "modinfo-link-hover": "#5aa9d6", // 链接悬浮时的颜色
+    "modinfo-title": "#5aa9d6" // h1 h2 h3
   },
   colors: {},
 };

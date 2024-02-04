@@ -12,7 +12,7 @@
     <!-- V1 -->
     <v-btn :icon="true" @click="OpenV1()" style="font-weight: bold; color: #707570">V₁</v-btn>
 
-    <v-btn icon="mdi-gamepad-outline" @click="$router.push('/mods')"></v-btn>
+    <v-btn icon="mdi-bee-flower" @click="$router.push('/mods')"></v-btn>
 
     <!-- api页面 -->
     <v-btn icon="mdi-api" @click="router.push('/api')"> </v-btn>
