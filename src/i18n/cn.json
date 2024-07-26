@@ -86,5 +86,24 @@
   "setting": {
     "customFont": "自定义字体",
     "setting": "设置"
+  },
+  "steam": {
+    "notAnyConfig": "没有任何配置",
+    "resetConfig": "重置配置",
+    "description": "描述",
+    "configuration": "配置",
+    "search": "搜索",
+    "latestVersion": "最新版本",
+    "updatedTime": "更新日期",
+    "createdTime": "创建日期",
+    "modSize": "Mod大小",
+    "author": "作者",
+    "uniqueVisitors": "不重复访客数",
+    "currentSubscribers": "当前订阅者",
+    "currentFavorites": "当前收藏人数",
+    "serverMod": "服务器 Mod",
+    "clientMod": "客户端 Mod",
+    "searchResultLabel": "正在显示第 {0} - {1} 项,  共 {2} 个 Mods",
+    "notSearchResult": "没有搜索到任何 Mods"
   }
 }

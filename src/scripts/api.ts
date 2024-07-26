@@ -149,35 +149,35 @@ export async function GetModsInfoAsync(params: {
   return model;
 }
 
-export async function QueryModsAsync(params: QueryModsParams) {
-  const r = await FetchAsync("api/v2/mods/QueryMods", null, JSON.stringify(params));
+export async function QueryModsAsync(params: QueryModsParams, cancellationToken: CancellationToken | null = null) {
+  const r = await FetchAsync("api/v2/mods/QueryMods", null, JSON.stringify(params), cancellationToken);
   const model = (await r?.json()) as QueryModsResponse;
   return model;
 }
 
-export async function GetSteamUserInfo(steamid?: number | string | null) {
-  if(steamid == null) 
-    return null;
-  const url = new URL('https://steam.233.pink/avatar');
-  url.searchParams.append("steamid", steamid.toString());
-  try {
-    const response = await fetch(url);
-    const json = await response.json() as {
-      steamid: string; // number id
-      communityvisibilitystate: number;
-      personaname: string; // name
-      profileurl: string; // url
-      avatar: string; // url
-      avatarmedium: string; // url
-      avatarfull: string; // url
-      avatarhash: string;
-      personastate: number;
-      primaryclanid: string;
-      timecreated: number;
-      personastateflags: number;
-    };
-    return json;
-  } catch (error) {
-    return null;
-  }
-}
+// export async function GetSteamUserInfo(steamid?: number | string | null) {
+//   if(steamid == null) 
+//     return null;
+//   const url = new URL('https://steam.233.pink/avatar');
+//   url.searchParams.append("steamid", steamid.toString());
+//   try {
+//     const response = await fetch(url);
+//     const json = await response.json() as {
+//       steamid: string; // number id
+//       communityvisibilitystate: number;
+//       personaname: string; // name
+//       profileurl: string; // url
+//       avatar: string; // url
+//       avatarmedium: string; // url
+//       avatarfull: string; // url
+//       avatarhash: string;
+//       personastate: number;
+//       primaryclanid: string;
+//       timecreated: number;
+//       personastateflags: number;
+//     };
+//     return json;
+//   } catch (error) {
+//     return null;
+//   }
+// }

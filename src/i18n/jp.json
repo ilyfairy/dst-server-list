@@ -83,5 +83,9 @@
   "setting": {
     "customFont": "カスタムフォント",
     "setting": "設定"
+  },
+  "steam": {
+    "notAnyConfig": "",
+    "searchResultLabel": "{2}件中 {0}-{1} を表示"
   }
 }

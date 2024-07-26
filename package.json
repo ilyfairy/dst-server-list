@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@mdi/font": "7.3.67",
+    "@mdi/font": "^7.4.47",
     "@vue/eslint-config-typescript": "^12.0.0",
     "D": "^1.0.0",
     "color-interpolate": "^1.0.5",
@@ -18,11 +18,11 @@
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.0",
     "roboto-fontface": "*",
-    "vue": "^3.4.15",
+    "vue": "^3.4.23",
     "vue-clipboard3": "^2.0.0",
     "vue-i18n": "^9.9.0",
-    "vue-router": "^4.2.5",
-    "vuetify": "^3.5.2",
+    "vue-router": "^4.3.2",
+    "vuetify": "^3.6.13",
     "webfontloader": "^1.0.0"
   },
   "devDependencies": {
@@ -35,14 +35,14 @@
     "@vitejs/plugin-vue-jsx": "^3.1.0",
     "eslint": "^8.54.0",
     "eslint-plugin-vue": "^9.19.2",
-    "prettier": "^3.1.0",
+    "prettier": "^3.2.5",
     "sass": "^1.69.4",
     "sass-loader": "^13.3.2",
     "terser": "^5.26.0",
     "typescript": "^5.3.3",
-    "vite": "^5.0.12",
-    "vite-plugin-vue-devtools": "^7.0.13",
-    "vite-plugin-vuetify": "^2.0.1",
+    "vite": "^5.3.4",
+    "vite-plugin-vue-devtools": "^7.0.27",
+    "vite-plugin-vuetify": "^2.0.3",
     "vue-cli-plugin-pinia": "~0.2.4",
     "vue-cli-plugin-vuetify": "~2.5.8",
     "vue-tsc": "^1.8.27"

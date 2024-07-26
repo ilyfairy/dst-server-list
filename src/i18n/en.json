@@ -86,5 +86,24 @@
   "setting": {
     "customFont": "Custom Font",
     "setting": "Settings"
+  },
+  "steam": {
+    "notAnyConfig": "Not Any Configuration",
+    "resetConfig": "Reset Configuration",
+    "configuration": "Configuration",
+    "description": "Description",
+    "search": "Search",
+    "latestVersion": "Latest Version",
+    "createdTime": "Created Time",
+    "updatedTime": "Updated Time",
+    "modSize": "Mod Size",
+    "author": "Author",
+    "uniqueVisitors": "Unique Visitors",
+    "currentSubscribers": "Current Subscribers",
+    "currentFavorites": "Current Favorites",
+    "serverMod": "Server Mod",
+    "clientMod": "Client Mod",
+    "searchResultLabel": "Showing {0}-{1} of {2} mods",
+    "notSearchResult": "No Mods found"
   }
 }

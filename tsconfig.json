@@ -22,7 +22,7 @@
 
     "paths": {
       "@/*": ["./src/*"],
-      "vuex": ["./node_modules/vuex/types"]
+      // "vuex": ["./node_modules/vuex/types"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],

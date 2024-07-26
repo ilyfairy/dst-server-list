@@ -23,7 +23,7 @@
       <!-- 内容 -->
       <v-row>
         <!-- 左侧 -->
-        <v-col cols="9" style="margin-right: -40px;">
+        <v-col cols="9" style="margin-right: -40px">
           <!-- <div @click="OpenSteamModUrl(data.info?.WorkshopId)">{{ data.info?.WorkshopId }}</div> -->
 
           <!-- 轮播图 -->
@@ -60,10 +60,10 @@
           </v-card-text>
 
           <!-- 喵述 -->
-          <v-card-text style="color: rgb(var(--v-modinfo-foreground1));">
+          <v-card-text style="color: rgb(var(--v-modinfo-foreground1))">
             <v-tabs class="mb-4" v-model="data.mainIndex">
-              <v-tab>描述</v-tab>
-              <v-tab v-if="!data.loading">配置</v-tab>
+              <v-tab>{{ $t("steam.description") }}</v-tab>
+              <v-tab v-if="!data.loading">{{ $t("steam.configuration") }}</v-tab>
             </v-tabs>
 
             <!-- <div style="color: #555" class="mb-2">描述:</div> -->
@@ -82,10 +82,10 @@
               <!-- 配置 -->
               <v-window-item>
                 <div v-if="data.info?.ConfigurationOptions == null || data.info.ConfigurationOptions.length == 0">
-                  没有任何配置
+                  {{ $t("steam.notAnyConfig") }}
                 </div>
                 <div v-else>
-                  <v-btn variant="text" @click="ResetOptions()">重置配置</v-btn>
+                  <v-btn variant="text" @click="ResetOptions()">{{ $t("steam.resetConfig") }}</v-btn>
                   <div v-for="item in data.configArray" :key="item.Object.Name">
                     <div v-if="item.Object.Type == 'Invalid'"></div>
                     <div v-if="item.Object.Type == 'Empty'">
@@ -96,11 +96,13 @@
                     </div>
                     <div v-if="item.Object.Type == 'Option' && data.configMap[item.Object.Name]">
                       <span class="ml-1">{{ item.Object.Label || item.Object.Name }}:</span>
-                      <v-btn icon="mdi-menu-left" variant="text" @click="SwitchConfigItem(item, '<')"></v-btn>
-                      <span class="ml-3 mr-3">{{
-                        item.Object.Options[data.configMap[item.Object.Name].Index].Description
-                      }}</span>
-                      <v-btn icon="mdi-menu-right" variant="text" @click="SwitchConfigItem(item, '>')"></v-btn>
+                      <v-btn :icon="true" variant="text" @click="SwitchConfigItem(item, '<')">
+                        <v-icon><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>menu-left</title><path fill="#707570" d="M14,7L9,12L14,17V7Z" /></svg></v-icon>
+                      </v-btn>
+                      <span class="ml-3 mr-3">{{item.Object.Options[data.configMap[item.Object.Name].Index].Description}}</span>
+                      <v-btn :icon="true" variant="text" @click="SwitchConfigItem(item, '>')">
+                        <v-icon><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>menu-right</title><path fill="#707570" d="M10,17L15,12L10,7V17Z" /></svg></v-icon>
+                      </v-btn>
                     </div>
                   </div>
                 </div>
@@ -121,21 +123,21 @@
           </div>
 
           <div>
-            <div v-if="data.info?.ModType == 'Client'">客户端 Mod</div>
-            <div v-if="data.info?.ModType == 'Server'">服务器 Mod</div>
+            <div v-if="data.info?.ModType == 'Client'">{{ $t("steam.clientMod") }}</div>
+            <div v-if="data.info?.ModType == 'Server'">{{ $t("steam.serverMod") }}</div>
           </div>
 
-          <div v-if="data.info" class="align-center">最新版本: {{ data.info?.Version }}</div>
+          <div v-if="data.info" class="align-center">{{ $t("steam.latestVersion") }}: {{ data.info?.Version }}</div>
 
           <div v-if="data.info?.CreatedTime">
-            创建日期: {{ utils.ToDateString(data.info.CreatedTime, utils.DateType.Full) }}
+            {{ $t("steam.createdTime") }}: {{ utils.ToDateString(data.info.CreatedTime, utils.DateType.Full) }}
           </div>
           <div v-if="data.info?.UpdateTime">
-            更新日期: {{ utils.ToDateString(data.info.UpdateTime, utils.DateType.Full) }}
+            {{ $t("steam.updatedTime") }}: {{ utils.ToDateString(data.info.UpdateTime, utils.DateType.Full) }}
           </div>
 
           <div v-if="data.info?.Size">
-            Mod大小:
+            {{ $t("steam.modSize") }}:
             <span v-if="data.info.Size <= 1024"> {{ data.info.Size }}Bytes</span>
             <span v-if="data.info.Size <= 1024 * 1024"> {{ (data.info.Size / 1024).toFixed(2) }}KB</span>
             <span v-if="data.info.Size > 1024 * 1024"> {{ (data.info.Size / 1024 / 1024).toFixed(2) }}MB</span>
@@ -167,14 +169,11 @@
             </div>
           </div>
 
-          <!-- 作者 -->
+          <!-- <!== 作者 ==>
           <div class="mt-5" v-if="data.info">
-            <div>作者:</div>
+            <div>{{ $t("steam.author") }}:</div>
             <div>
-              <div
-                class="d-flex pa-1"
-                style="border: #555 solid 1px"
-              >
+              <div class="d-flex pa-1" style="border: #555 solid 1px">
                 <div class="mr-1">
                   <v-img :src="data.avatarUrl" width="50" height="50"></v-img>
                 </div>
@@ -184,8 +183,8 @@
               </div>
             </div>
 
-            <!-- 单个作者 -->
-            <!-- <div v-if="(data.info.Author ?? '').split(creatorSplit).length <= 1">
+            <!== 单个作者 ==>
+            <!== <div v-if="(data.info.Author ?? '').split(creatorSplit).length <= 1">
               <div
                 class="d-flex pa-1"
                 style="border: #555 solid 1px"
@@ -199,10 +198,10 @@
                   {{ item }}
                 </v-btn>
               </div>
-            </div> -->
+            </div> ==>
 
-            <!-- 多个作者 -->
-            <!-- <div v-else>
+            <!== 多个作者 ==>
+            <!== <div v-else>
               <div
                 class="d-flex pa-1"
                 style="border: #555 solid 1px"
@@ -221,27 +220,24 @@
                   {{ item }}
                 </v-btn>
               </div>
-            </div> -->
-          </div>
+            </div> ==>
+          </div> -->
 
           <!-- 访客数 -->
           <div v-if="data.info?.View" class="mt-4">
             <div class="view-block">
               <div class="view-value">{{ utils.FormatSplitNumber(data.info.View.Views) }}</div>
-              <!-- <div class="view-label">不重复访客数</div> -->
-              <div class="view-label">Unique Visitors</div>
+              <div class="view-label">{{ $t("steam.uniqueVisitors") }}</div>
             </div>
 
             <div class="view-block">
               <div class="view-value">{{ utils.FormatSplitNumber(data.info.View.Subscriptions) }}</div>
-              <!-- <div class="view-label">当前订阅者</div> -->
-              <div class="view-label">Current Subscribers</div>
+              <div class="view-label">{{ $t("steam.currentSubscribers") }}</div>
             </div>
 
             <div class="view-block">
               <div class="view-value">{{ utils.FormatSplitNumber(data.info.View.Favorited) }}</div>
-              <!-- <div class="view-label">当前收藏人数</div> -->
-              <div class="view-label">Current Favorites</div>
+              <div class="view-label">{{ $t("steam.currentFavorites") }}</div>
             </div>
           </div>
         </v-col>
@@ -251,7 +247,7 @@
 </template>
 
 <script setup lang="ts">
-import { GetModsInfoAsync, GetSteamUserInfo } from "@/scripts/api";
+import { GetModsInfoAsync } from "@/scripts/api";
 import { WebModInfo, WebModInfoLite, ConfigurationOption } from "@/scripts/response-model";
 import { onMounted, onUnmounted, reactive, watch, ref } from "vue";
 import { OpenSteamModUrl, delay } from "@/scripts/utils";
@@ -305,18 +301,18 @@ onMounted(async () => {
   try {
     if (props.info != null) {
       //提前请求头像
-      GetSteamUserInfo(props.info?.AuthorSteamId).then(r => {
-        data.avatarUrl = r?.avatar?.toString() ?? "";
-        data.creatorName = r?.personaname ?? "";
-      });
+      // GetSteamUserInfo(props.info?.AuthorSteamId).then(r => {
+      //   data.avatarUrl = r?.avatar?.toString() ?? "";
+      //   data.creatorName = r?.personaname ?? "";
+      // });
       data.info = props.info as WebModInfo;
       await GetModInfo(props.info.WorkshopId);
     } else if (props.id != null) {
       await GetModInfo(props.id);
-      GetSteamUserInfo(data.info?.AuthorSteamId).then(r => {
-        data.avatarUrl = r?.avatar?.toString() ?? "";
-        data.creatorName = r?.personaname ?? "";
-      });
+      // GetSteamUserInfo(data.info?.AuthorSteamId).then(r => {
+      //   data.avatarUrl = r?.avatar?.toString() ?? "";
+      //   data.creatorName = r?.personaname ?? "";
+      // });
     }
   } catch (e) {
     //
@@ -367,7 +363,6 @@ function ResetOptions() {
     option.Index = option.DefaultIndex;
   }
 }
-
 
 function FormatDescription(description: string | null | undefined): string {
   if (description == null || description.length == 0) return "";
@@ -446,10 +441,7 @@ function FormatDescriptionInternal(description: string) {
     /\[url=(.*?)\](.*?)\[\/url\]/gi,
     '<a href="$1" class="steam-a" target="_black">$2</a>',
   ); // [url=链接]文字[/url]
-  description = description.replaceAll(
-    /\[url=(.*?)\]/gi,
-    '<a href="$1" class="steam-a" target="_black">$1</a>',
-  ); // [url=链接]
+  description = description.replaceAll(/\[url=(.*?)\]/gi, '<a href="$1" class="steam-a" target="_black">$1</a>'); // [url=链接]
 
   description = description.replaceAll(
     /\[img\](.*?)\[\/img\]/gi,
@@ -561,7 +553,6 @@ onUnmounted(() => {
   data.cts.Cancel();
   data.info = null;
 });
-
 </script>
 
 <style lang="scss" scoped>
@@ -581,7 +572,7 @@ onUnmounted(() => {
 }
 .view-value {
   display: inline-block;
-  color: #68B;
+  color: #68b;
   width: 4.5em;
   text-align: right;
   margin-right: 10px;
@@ -635,7 +626,8 @@ onUnmounted(() => {
 .stam-a:visited {
   color: rgb(var(--v-modinfo-link));
 }
-.steam-a:active { // 点击'时'的颜色
+.steam-a:active {
+  // 点击'时'的颜色
   color: rgb(var(--v-modinfo-link-hover));
 }
 

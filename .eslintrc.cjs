@@ -22,7 +22,12 @@ module.exports = {
     "@typescript-eslint/no-unused-vars": ["off"], // 已声明但未使用
     // "@typescript-eslint/consistent-type-exoprts": "error",
     // "@typescript-eslint/consistent-type-imports": "error",
+    "vue/no-v-text-v-html-on-component": [
+      "error",
+      { "allow": ["v-icon"] }
+    ]
   },
+  
 };
 
 // module.exports = {

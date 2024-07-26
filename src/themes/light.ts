@@ -13,7 +13,7 @@ const light: ThemeDefinition = {
     yes: "#00BB00",
     no: "#CC0000",
 
-    "modinfo-background1": "#fdfceb",
+    "modinfo-background1": "#fdf9f4", // 主背景色
     "modinfo-background2": "#fbfecb", // 例如,边框颜色
     "modinfo-foreground1": "#1b2838",
     "modinfo-foreground2": "#616364", // #ACB2B8
