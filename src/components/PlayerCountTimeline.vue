@@ -1,5 +1,6 @@
 <template>
-  <div :ref="v => ((data as any).ui = v)" style="height: 150px"></div>
+  <!-- <div :ref="v => ((data as any).ui = v)" style="height: 150px"></div> -->
+  <div ref="ui" style="height: 150px"></div>
 </template>
 
 <script setup lang="tsx">
@@ -8,7 +9,8 @@ import { EChartsOption, default as echarts } from "@/plugins/echarts";
 import ColorManager from "@/scripts/ColorManager";
 import { ServerHistoryItem } from "@/scripts/response-model";
 import { translate } from "@/scripts/translate";
-import { DateType, GetSeasonDaysString, ToDateString } from "@/scripts/utils";
+import { DateType, GetSeasonDaysString, ToDateString, delay } from "@/scripts/utils";
+import { ref } from "vue";
 import { nextTick } from "vue";
 import { computed, onMounted, onUnmounted, reactive, shallowRef, watch } from "vue";
 import { useTheme } from "vuetify";
@@ -21,9 +23,11 @@ const props = defineProps<{
   list: ServerHistoryItem[] | null;
 }>();
 
-const data = reactive({
-  ui: null as null | HTMLElement,
-});
+const ui = ref<HTMLElement | null>(null);
+const isDisplay = ref(false);
+// const data = reactive({
+//   ui: null as null | HTMLElement,
+// });
 
 const chartsInfo = shallowRef<null | echarts.ECharts>(null);
 
@@ -161,6 +165,7 @@ function SetData() {
   chartsInfo.value?.setOption(option.value);
 }
 
+//当发生改变时, 或挂载时, 则更新图标
 watch(
   () => props.list,
   newValue => {
@@ -178,8 +183,18 @@ const onresize = () => {
 };
 
 onMounted(async () => {
+  isDisplay.value = true;
   await nextTick(); // 确保让ui.clientWidth加载完毕
-  chartsInfo.value = echarts.init(data.ui, theme.current.value.dark ? "dark" : "light");
+  chartsInfo.value = echarts.init(ui.value, theme.current.value.dark ? "dark" : "light");
+  while(!(ui.value?.clientWidth) || !(ui.value?.clientHeight)) {
+    if(isDisplay.value){
+      await delay(50);
+    }else{
+      return;
+    }
+  }
+  // console.log('width: ', ui.value?.clientWidth);
+  // console.log('height: ', ui.value?.clientHeight);
   SetData();
   window.addEventListener("resize", onresize);
 });
@@ -187,6 +202,7 @@ onMounted(async () => {
 onUnmounted(() => {
   chartsInfo.value?.dispose();
   window.removeEventListener("resize", onresize);
+  isDisplay.value = false;
 });
 </script>
 

@@ -1,35 +1,72 @@
 <template>
   <v-main style="background-color: rgb(var(--v-modinfo-background1)); color: rgb(var(--v-modinfo-foreground1))">
+    <!-- 回到主页 -->
     <v-btn
-        :elevation="5"
-        icon="mdi-home"
-        @click="$router.push('/')"
-        class="position-fixed"
-        style="left: 25px; top: 25px"
-        variant="text"
-      ></v-btn>
+      :elevation="5"
+      :icon="true"
+      @click="$router.push('/')"
+      class="position-fixed"
+      style="left: 25px; top: 25px"
+      variant="text"
+    >
+    <v-icon>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <title>home</title>
+        <path fill="#707570" d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z" />
+      </svg>
+    </v-icon>
+  </v-btn>
+
+    <!-- 当前页面 -->
     <v-container>
-      <v-row>
-        <v-text-field :hide-details="true" variant="underlined" v-model="data.query.Text" class="mb-2">
-        </v-text-field>
-        <div class="d-flex align-center">
-          <v-btn @click="QueryMods()" variant="text">搜索</v-btn>
-        </div>
+      <v-row class="d-flex align-center justify-center">
+        <v-form
+          @submit.prevent="QueryMods()"
+          class="d-flex justify-center align-center"
+          style="width: 100%"
+        >
+          <v-text-field
+            :hide-details="true"
+            variant="underlined"
+            v-model="data.query.Text"
+            class="mb-2"
+            style="max-width: 300px"
+          >
+          </v-text-field>
+          <v-btn variant="text" type="submit">{{ $t("steam.search") }}</v-btn>
+          <!-- <div class="d-flex align-center">
+          </div> -->
+        </v-form>
       </v-row>
 
       <v-row>
-        <span
+        <!-- Showing 1-14 of 14 entries -->
+        <!-- 正在显示第 1 - 20 项，共 20 项条目 -->
+        <span v-if="data.response.Count != 0">{{
+          $t("steam.searchResultLabel", [
+            fallbackNaN(data.response.PageIndex * (data.query.PageSize ?? 100) + 1, 0),
+            fallbackNaN(data.response.PageIndex * (data.query.PageSize ?? 100) + data.response.Count, 0),
+            fallbackNaN(data.response.TotalCount, 0),
+          ])
+        }}</span>
+        <span v-else>
+          {{ $t("steam.notSearchResult") }}
+        </span>
+        <!-- <span
           >正在显示第 {{ fallbackNaN(data.response.PageIndex * (data.query.PageSize ?? 100) + 1, 0) }} -
           {{ fallbackNaN(data.response.PageIndex * (data.query.PageSize ?? 100) + data.response.Count, 0) }} 项</span
-        >
-        <span class="ml-4">共 {{ fallbackNaN(data.response.TotalCount, 0) }} 项条目</span>
+        >,
+        <span class="ml-4">共 {{ fallbackNaN(data.response.TotalCount, 0) }} 个 Mods</span> -->
       </v-row>
 
       <!-- Mods列表 -->
       <v-row style="justify-content: center">
         <template v-for="mod in data.response?.Mods" :key="mod.WorkshopId">
           <div style="margin: 10px; width: 200px">
-            <div style="background-color: #7f000000; border: rgb(var(--v-modinfo-background2)) solid 1px" @click="ShowInfo(mod)">
+            <div
+              style="background-color: #7f000000; border: rgb(var(--v-modinfo-background2)) solid 1px"
+              @click="ShowInfo(mod)"
+            >
               <v-img
                 height="200px"
                 v-if="mod.PreviewImageType?.includes('gif')"
@@ -69,7 +106,7 @@
           style="right: 25px; top: 25px"
           variant="text"
         >
-          <v-icon >mdi-close</v-icon>
+          <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-fab-transition>
     </v-dialog>
@@ -78,6 +115,7 @@
 
 <script setup lang="ts">
 import ModInfoPanel from "@/components/ModInfoPanel.vue";
+import CancellationTokenSource from "@/scripts/Sharp/CancellationTokenSource";
 import { QueryModsAsync, GetModsInfoAsync } from "@/scripts/api";
 import { QueryModsParams } from "@/scripts/models";
 import { QueryModsResponse, WebModInfoLite, WebModInfoResponse } from "@/scripts/response-model";
@@ -92,6 +130,7 @@ const data = reactive({
     Language: "Chinese",
   } as QueryModsParams,
   response: {} as QueryModsResponse,
+  cts: new CancellationTokenSource(),
 });
 
 const ui = reactive({
@@ -122,7 +161,9 @@ watch(
 );
 
 async function QueryMods() {
-  const r = await QueryModsAsync(data.query);
+  data.cts.Cancel();
+  data.cts = new CancellationTokenSource();
+  const r = await QueryModsAsync(data.query, data.cts.Token);
   if (r?.Code != 200) return;
 
   data.response = r;
@@ -148,6 +189,5 @@ QueryMods();
 
 <style>
 :root {
-  
 }
 </style>

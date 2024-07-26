@@ -10,7 +10,6 @@
         :placeholder="placeholder"
         :hide-details="true"
         :single-line="true"
-        prepend-inner-icon="mdi-magnify"
         :model-value="input"
         @update:model-value="OnInputChanged"
         @keydown.enter="emit('fetch')"
@@ -20,6 +19,14 @@
         density="compact"
         :flat="true"
       >
+        <template v-slot:prepend-inner>
+          <v-icon>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <title>magnify</title>
+            <path fill="#707570" d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
+          </svg>
+          </v-icon>
+        </template>
       </v-text-field>
 
       <!-- 过滤按钮 -->
@@ -30,11 +37,17 @@
           InitDynamicOptions();
         "
       >
-        <v-icon>mdi-filter-variant</v-icon>
+        <v-icon>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>filter-variant</title><path fill="#707570" d="M6,13H18V11H6M3,6V8H21V6M10,18H14V16H10V18Z" /></svg>
+        </v-icon>
       </v-btn>
-      <v-btn icon="mdi-filter-variant-remove" @click="ResetFilter()"> </v-btn>
+      <v-btn :icon="true" @click="ResetFilter()">
+        <v-icon><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>filter-variant-remove</title><path fill="#707570" d="M21 8H3V6H21V8M13.81 16H10V18H13.09C13.21 17.28 13.46 16.61 13.81 16M18 11H6V13H18V11M21.12 15.46L19 17.59L16.88 15.46L15.47 16.88L17.59 19L15.47 21.12L16.88 22.54L19 20.41L21.12 22.54L22.54 21.12L20.41 19L22.54 16.88L21.12 15.46Z" /></svg></v-icon>
+      </v-btn>
 
-      <v-btn icon="mdi-tune" @click="ui.isShowSettings = true"> </v-btn>
+      <v-btn :icon="true" @click="ui.isShowSettings = true">
+        <v-icon><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>tune</title><path fill="#707570" d="M3,17V19H9V17H3M3,5V7H13V5H3M13,21V19H21V17H13V15H11V21H13M7,9V11H3V13H7V15H9V9H7M21,13V11H11V13H21M15,9H17V7H21V5H17V3H15V9Z" /></svg></v-icon>
+      </v-btn>
     </v-toolbar>
 
     <v-expand-transition>

@@ -19,7 +19,12 @@
           <v-spacer></v-spacer>
           <div style="min-width: 11em; text-align: right" class="swap-controls">
             <span v-if="dstInfo.listLastUpdated && dstInfo.listLastUpdated >= 0">
-              <v-icon :size="16">mdi-clock-outline</v-icon>
+              <v-icon :size="16">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <title>clock-outline</title>
+                  <path fill="#707570" d="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z" />
+                </svg>
+              </v-icon>
               {{ $t("home.lastUpdateTime") }}: {{ dstInfo.listLastUpdated }}{{ $t("home.sec") }}
             </span>
           </div>
