@@ -1,10 +1,10 @@
 import { defineStore } from "pinia";
-import i18n from '@/i18n';
+import i18n from "@/i18n";
 import { Language } from "@/scripts/units";
 
 //进入页面自动设置语言
 let lang = localStorage.getItem("lang");
-if (!i18n.global.availableLocales.includes(lang as Language | null ?? "cn")) {
+if (!i18n.global.availableLocales.includes((lang as Language | null) ?? "cn")) {
   if (navigator.language != null) {
     switch (navigator.language.split("-")[0]) {
       case "zh":
@@ -24,7 +24,7 @@ document.title = i18n.global.t("title");
 export const useAppStore = defineStore("app", {
   state: () => ({
     lang: lang as Language,
-    theme: ''
+    theme: "",
   }),
   actions: {
     switchLanguage(lang: Language) {
@@ -36,6 +36,12 @@ export const useAppStore = defineStore("app", {
     switchTheme(theme: string) {
       this.theme = theme;
       localStorage.setItem("theme", theme);
+
+      if (theme == "light") {
+        localStorage.setItem("isDark", "false");
+      } else if (theme == "dark") {
+        localStorage.setItem("isDark", "true");
+      }
     },
   },
 });

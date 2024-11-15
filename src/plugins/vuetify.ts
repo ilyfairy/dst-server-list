@@ -2,8 +2,8 @@
 
 // import "@mdi/font/css/materialdesignicons.css"; # 不再使用这个, 取而代之的是自定义的裁剪字体
 // import "vuetify/styles";
-import "@/styles/main.scss"
-import "@/style.scss"
+import "@/styles/main.scss";
+import "@/style.scss";
 
 // // @ts-expect-error Missing type definitions
 // import colors from "vuetify/lib/util/colors";
@@ -82,7 +82,6 @@ export default createVuetify({
         // 数据表格默认图标样式
         style: "color: #707570; width: 16px!important; height: 16px!important;",
         size: "16px", // v-icon图标默认大小import { useAppStore } from './../store/app';
-
       },
     },
   },

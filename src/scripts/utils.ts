@@ -1,4 +1,4 @@
-import { DstDaysInfo, DstModInfo, DstPlayer, Platform } from "./models";
+import { DstDaysInfo, DstModInfo, DstPlayer, DstServer, Platform } from "./models";
 import i18n from "@/i18n";
 
 /** 生成min~nax的随机整数 [min,max] */
@@ -90,25 +90,25 @@ export function CalcSeasonState(daysInfo?: DstDaysInfo | null): "early" | "late"
 }
 
 export function OpenSteamPlayerUrl(steamid: string | number | null | undefined) {
-  if(steamid == null) return;
+  if (steamid == null) return;
   window.open(`https://steamcommunity.com/profiles/${steamid}`);
 }
 
 /** 打开玩家个人主页 */
 export function OpenPlayerUrl(platform: Platform | number | null, player: DstPlayer) {
   switch (platform) {
-    case "Steam" || 1:
+    case Platform.Steam || 1:
       window.open(`https://steamcommunity.com/profiles/${player.NetId}`);
       break;
-    case "PlayStation" || 2:
+    case Platform.PlayStation || 2:
       window.open(`https://my.playstation.com/profile/${player.NetId}`);
       break;
-    case "WeGame" || 4:
+    case Platform.WeGame || 4:
       break;
-    case "Xbox" || 16:
+    case Platform.Xbox || 16:
       window.open(`https://account.xbox.com/en-US/Profile?gamerTag=${player.Name}`);
       break;
-    case "Switch" || 32:
+    case Platform.Switch || 32:
       break;
     default:
       // this.snackbarText = "未知平台";
@@ -120,7 +120,7 @@ export function OpenPlayerUrl(platform: Platform | number | null, player: DstPla
 /** 打开Mod页面 */
 export function OpenModUrl(platform: Platform | number | null, mod: DstModInfo) {
   switch (platform) {
-    case "Steam" || 1:
+    case Platform.Steam || 1:
       window.open(`https://steamcommunity.com/sharedfiles/filedetails/?id=${mod.Id}`);
       break;
     default:
@@ -189,12 +189,24 @@ export function OpenSteamGroup(id: string) {
 
 /** 1,000,000 */
 export function FormatSplitNumber(num: number) {
-  if (num < 1000)
-    return num.toString(); // 999
-  
-  if(num < 1000000) // 999,999
-    return `${(num / 1000 % 1000).toFixed()},${num % 1000}`
-  
+  if (num < 1000) return num.toString(); // 999
+
+  if (num < 1000000)
+    // 999,999
+    return `${((num / 1000) % 1000).toFixed()},${num % 1000}`;
+
   // 999,999,999
-  return `${(num / 1000000 % 1000).toFixed()},${(num / 1000 % 1000).toFixed().padStart(3,'0')},${num % 1000}`
+  return `${((num / 1000000) % 1000).toFixed()},${((num / 1000) % 1000).toFixed().padStart(3, "0")},${num % 1000}`;
+}
+
+export function GetCountryImageUrl(server: DstServer) {
+  if (server.Address.IsoCode == null) {
+    if (server.Address.IP == "127.0.0.1" && server.Platform == Platform.WeGame) {
+      return `/country-webp/CN.webp`;
+    } else {
+      return undefined;
+    }
+  } else {
+    return `/country-webp/${server.Address.IsoCode}.webp`;
+  }
 }

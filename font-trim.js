@@ -35,6 +35,17 @@ const chars = {
   "mdi-theme-light-dark": "\u{F050E}",
   "mdi-transfer-down": "\u{F0DA1}",
   "mdi-translate": "\u{F05CA}",
+  "mdi-magnify": "\u{F0349}",
+  "mdi-filter-variant": "\u{F0236}",
+  "mdi-filter-variant-remove": "\u{F103F}",
+  "mdi-tune": "\u{F062E}",
+  "mdi-bee": "\u{F0FA1}",
+  "mdi-api": "\u{F109B}",
+  "mdi-link-variant": "\u{F0339}",
+  "mdi-delete": "\u{F01B4}",
+  "mdi-information-variant": "\u{F064E}",
+  "mdi-menu-left": "\u{F035E}",
+  "mdi-menu-right": "\u{F035F}",
 };
 let text = "";
 let css = "";
