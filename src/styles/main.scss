@@ -1,2 +1,4 @@
-@use "vuetify";
-@use "vuetify/settings";
+@use "vuetify" with (
+  $body-font-family: var(--font-global),
+);
+@use "./mdi-icon-main.scss"; // 自定义的裁剪字体

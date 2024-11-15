@@ -11,16 +11,16 @@
 
 :root {
   --font-dst: "dst emoji";
-  --font-default: "Torus"; // 全局可设置的字体
-  --font-global: var(--font-default), var(--font-dst); // 需要应用的字体
+  --font-custom: "Torus"; // 全局可设置的字体
+  --font-global: var(--font-custom), var(--font-dst); // 需要应用的字体
 }
 
 html {
-  font-family: var(--font-global) !important;
+  // font-family: var(--font-global) !important;
 }
 
 input {
-  font-family: var(--font-global) !important;
+  // font-family: var(--font-global) !important;
 }
 
 .no-data-text {

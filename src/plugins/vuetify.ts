@@ -1,5 +1,6 @@
 // Styles
-// import "@mdi/font/css/materialdesignicons.css";
+
+// import "@mdi/font/css/materialdesignicons.css"; # 不再使用这个, 取而代之的是自定义的裁剪字体
 // import "vuetify/styles";
 import "@/styles/main.scss"
 import "@/style.scss"
@@ -14,8 +15,6 @@ import dark from "@/themes/dark";
 import { useAppStore } from "@/store/app";
 import pinia from "@/store/index";
 import { VIcon } from "vuetify/components";
-
-import "./icon.scss";
 
 const appStore = useAppStore(pinia);
 

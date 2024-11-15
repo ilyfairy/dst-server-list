@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-const fontkey = "--font-default";
+const fontkey = "--font-custom";
 
 export const useSettingsStore = defineStore("settings", {
   state: () => ({
