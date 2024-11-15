@@ -1,5 +1,19 @@
+<script setup lang="ts">
+// 三开关switch
+
+const props = defineProps<{
+  modelValue: boolean | null;
+  label: string;
+  color?: string | undefined;
+}>();
+
+const emit = defineEmits<{
+  (event: "update:modelValue", arg1: typeof props.modelValue): void;
+}>();
+</script>
+
 <template>
-  <v-switch
+  <VSwitch
     :inset="true"
     :model-value="modelValue"
     :label="label"
@@ -22,21 +36,7 @@
         emit('update:modelValue', false);
       }
     "
-  ></v-switch>
+  ></VSwitch>
 </template>
-
-<script setup lang="ts">
-//三开关switch
-
-const props = defineProps<{
-  modelValue: boolean | null;
-  label: string;
-  color?: string | undefined;
-}>();
-
-const emit = defineEmits<{
-  (event: "update:modelValue", arg1: typeof props.modelValue): void;
-}>();
-</script>
 
 <style></style>

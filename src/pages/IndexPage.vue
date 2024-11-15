@@ -1,345 +1,7 @@
-<template>
-  <!-- <v-responsive> -->
-
-  <!-- 左侧导航栏 -->
-  <app-navigation v-model:is-show="uiState.isNavShow"></app-navigation>
-
-  <!-- 顶栏 -->
-  <v-app-bar class="my-elevation">
-    <v-app-bar-nav-icon @click="uiState.isNavShow = true">
-    </v-app-bar-nav-icon>
-    <v-app-bar-title>{{ $t("title") }}</v-app-bar-title>
-
-    <!-- V1 -->
-    <v-btn :icon="true" @click="OpenV1()" style="font-weight: bold; color: #707570">V₁</v-btn>
-
-    <v-btn @click="$router.push('/mods')" :icon="true">
-      <v-icon>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-          <title>bee</title>
-          <path fill="#707570" d="M17.4 9C17 7.8 16.2 7 15 6.5V5H14V6.4H13.6C12.5 6.4 11.6 6.8 10.8 7.6L10.4 8L9 7.5C8.7 7.4 8.4 7.3 8 7.3C7.4 7.3 6.8 7.5 6.3 7.9C5.7 8.3 5.4 8.8 5.2 9.3C5 10 5 10.6 5.2 11.3C5.5 12 5.8 12.5 6.3 12.8C5.9 14.3 6.2 15.6 7.3 16.7C8.1 17.5 9 17.9 10.1 17.9C10.6 17.9 10.9 17.9 11.2 17.8C11.8 18.6 12.6 19.1 13.6 19.1C13.9 19.1 14.3 19.1 14.6 19C15.2 18.8 15.6 18.4 16 17.9C16.4 17.3 16.6 16.8 16.6 16.2C16.6 15.8 16.6 15.5 16.5 15.2L16 13.6L16.6 13.2C17.4 12.4 17.8 11.3 17.7 10.1H19V9H17.4M7.7 11.3C7.1 11 6.9 10.6 7.1 10C7.3 9.4 7.7 9.2 8.3 9.4L11.5 10.6C9.9 11.4 8.7 11.6 7.7 11.3M14 16.9C13.4 17.1 13 16.9 12.7 16.3C12.4 15.3 12.6 14.1 13.4 12.5L14.6 15.6C14.8 16.3 14.6 16.7 14 16.9M15.2 11.6L14.6 10V9.9L14.3 9.6H14.2L12.6 9C13 8.7 13.4 8.5 13.9 8.5C14.4 8.5 14.9 8.7 15.3 9.1C15.7 9.5 15.9 9.9 15.9 10.4C15.7 10.7 15.5 11.2 15.2 11.6Z" />
-        </svg>
-      </v-icon>
-    </v-btn>
-
-    <!-- api页面 -->
-    <v-btn :icon="true" @click="router.push('/api')">
-      <v-icon>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-          <title>api</title>
-          <path fill="#707570" d="M7 7H5A2 2 0 0 0 3 9V17H5V13H7V17H9V9A2 2 0 0 0 7 7M7 11H5V9H7M14 7H10V17H12V13H14A2 2 0 0 0 16 11V9A2 2 0 0 0 14 7M14 11H12V9H14M20 9V15H21V17H17V15H18V9H17V7H21V9Z" />
-        </svg>
-      </v-icon>
-    </v-btn>
-
-    <!-- 历史服务器管理 -->
-    <v-btn :icon="true">
-      <v-icon>mdi-clock-outline</v-icon>
-      <v-menu activator="parent" :close-on-content-click="false" v-model="uiState.isServerHistoryShow">
-        <v-card>
-          <v-list>
-            <!-- Header -->
-            <v-list-item style="color: orange; font-weight: bold; font-size: 22px">
-              <span>{{ $t("home.history") }}</span>
-              <template v-slot:[`append`]>
-                <v-btn variant="text" :icon="true" @click="ServerHistoryManager.Clear()">
-                  <v-icon :size="28">mdi-delete</v-icon>
-                </v-btn>
-              </template>
-            </v-list-item>
-
-            <!-- List -->
-            <v-list-item
-              v-for="(item, index) in ServerHistoryManager.history"
-              v-bind:key="item.RowId"
-              @click="
-                ServerHistoryManager.ToTop(item);
-                ShowServerCard(ServerCardDataType.HistoryItem, item);
-                uiState.isServerHistoryShow = false;
-              "
-            >
-              <v-list-item-title>{{ item.Name }}</v-list-item-title>
-              <template v-slot:[`append`]>
-                <v-btn :icon="true" @click="ServerHistoryManager.RemoveAt(index)" variant="text">
-                  <v-icon :size="24">mdi-close</v-icon>
-                </v-btn>
-              </template>
-            </v-list-item>
-          </v-list>
-        </v-card>
-      </v-menu>
-    </v-btn>
-
-    <!-- 语言选项 -->
-    <v-btn :icon="true">
-      <v-icon>mdi-translate</v-icon>
-      <v-menu activator="parent">
-        <v-list>
-          <v-list-item v-for="item in languages" v-bind:key="item.key" @click="appStore.switchLanguage(item.key)">
-            <v-list-item-title>{{ item.name }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-    </v-btn>
-
-    <!-- 主题选项 -->
-    <v-btn :icon="true">
-      <v-icon>mdi-theme-light-dark</v-icon>
-      <v-menu activator="parent">
-        <v-list>
-          <v-list-item @click="appStore.switchTheme('light')">
-            <v-icon>mdi-lightbulb-on-10</v-icon>
-            <span> Light</span>
-          </v-list-item>
-          <v-list-item @click="appStore.switchTheme('dark')">
-            <v-icon>mdi-brightness-4</v-icon>
-            <span> Dark</span>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-    </v-btn>
-  </v-app-bar>
-
-  <!-- 主要内容 -->
-  <v-main>
-    <v-container :fluid="false">
-      <!-- 卡片包裹 -->
-      <v-card density="compact" class="rounded-lg my-elevation">
-        <!-- 工具栏 -->
-        <app-toolbar
-          v-model:input="data.input"
-          @update:input="
-            v => {
-              if (v != null && v != '') {
-                webHash.SetString(Names.Name, v);
-              } else {
-                webHash.SetString(Names.Name, null);
-              }
-            }
-          "
-          @fetch="QueryAsync()"
-          v-model:search-type="data.searchType"
-          @reset-filter="data.options.sortBy.length = 0"
-        ></app-toolbar>
-
-        <!-- 服务器列表 -->
-        <v-data-table-server
-          style="font-size: 16px !important"
-          :items-per-page="data.options.itemsPerPage"
-          v-model:options="data.options"
-          :items-per-page-text="$t('home.itemsPerPage') + ':'"
-          :items-per-page-options="[10, 20, 50, 100]"
-          :items-length="listInfo.response?.TotalCount ?? 0"
-          :headers="dynamicTabHeader as (typeof VDataTableServer)['headers']"
-          :items="listInfo.response?.List"
-          :no-data-text="$t('home.noData')"
-          :loading="data.isLoading"
-          :loading-text="$t('home.loading')"
-          :multi-sort="true"
-          @update:sort-by="
-            v => {
-              data.options.sortBy = v;
-              QueryAsync();
-            }
-          "
-          class="border-opacity"
-        >
-          <!-- 页脚 -->
-          <!-- <template v-slot:bottom>
-              <div style="display: flex;align-items: center;">
-                <div style="flex: 1;">
-                  <v-pagination
-                    v-model="data.options.page"
-                    :length="(data.data?.MaxPageIndex ?? 0) + 1"
-                    @update:model-value="QueryAsync()"
-                  ></v-pagination>
-                </div>
-                <div class="mr-2" style="display: flex;align-items: center;">
-                  <span class="text-no-wrap ml-1">当前页数量:{{ data.data?.Count ?? 0 }}</span>
-                  <v-btn>按钮</v-btn>
-                  <v-combobox :items="[10,20,50,100]" variant="plain"></v-combobox>
-                </div>
-              </div>
-            </template> -->
-
-          <!-- 页脚2 -->
-          <template v-slot:bottom>
-            <div class="d-flex align-center ml-2 mr-4 table-footer">
-              <!-- <span class="mr-3">{{ state.list?.Count ?? 0 }}</span> -->
-              <!-- <span class="ml-2 mr-2"> of </span> -->
-              <div class="ml-3">
-                <!-- 页数选择 -->
-                <v-pagination
-                  active-color="#D459F6"
-                  :length="(listInfo.response?.MaxPageIndex ?? 0) + 1"
-                  v-model="data.options.page"
-                  rounded="circle"
-                  :show-first-last-page="mediaQuery.sm ? false : true"
-                  :total-visible="mediaQuery.sm ? 3 : 5"
-                  @update:model-value="QueryAsync()"
-                ></v-pagination>
-              </div>
-              <!-- <span class="ml-2 mr-2">{{ $t("home.itemsPerPage") }}: </span> -->
-              <div class="d-flex justify-end table-footer-item2">
-                <div class="ml-3 mr-3">
-                  <v-select
-                    color="#555577"
-                    rounded="lg"
-                    v-model="data.options.itemsPerPage"
-                    @update:model-value="v => QueryAsync()"
-                    :items="[10, 20, 50, 100]"
-                    :hide-details="true"
-                    variant="outlined"
-                    density="compact"
-                  >
-                  </v-select>
-                </div>
-                <div>
-                  <v-btn @click="LoadNextPage()" variant="text" :icon="true">
-                    <v-icon :size="24">mdi-transfer-down</v-icon>
-                  </v-btn>
-                </div>
-                <!-- <span class="ml-3 mr-3" style="font-size: 20px">
-                  Total: {{ state.list?.TotalCount ?? 0 }}
-                </span> -->
-              </div>
-            </div>
-          </template>
-
-          <!-- 服务器名 -->
-          <template v-slot:[`item.Name`]="{ item }">
-            <div class="d-flex align-center">
-              <div>
-                <v-img
-                  :src="
-                    item.Address.IsoCode == null
-                      ? item.Address.IP == '127.0.0.1' && item.Platform == Platform.WeGame
-                        ? `/country-webp/CN.webp`
-                        : undefined
-                      : `/country-webp/${item.Address.IsoCode}.webp`
-                  "
-                  width="30"
-                  class="mr-2"
-                />
-                <!-- <v-icon icon="logo.ico"></v-icon> -->
-              </div>
-              <div>
-                <span>{{ item.Name }}</span>
-              </div>
-              <div>
-                <!-- 打开服务器详细信息 -->
-                <v-btn
-                  :icon="true"
-                  variant="flat"
-                  size="35"
-                  @click="
-                    ShowServerCard(ServerCardDataType.ServerInfo, item);
-                    ServerHistoryManager.AddHistory(item);
-                  "
-                >
-                  <v-icon size="20">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                      <title>link-variant</title>
-                      <path fill="#707570" d="M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z" />
-                    </svg>
-                  </v-icon>
-                </v-btn>
-              </div>
-            </div>
-          </template>
-
-          <!-- 连接数 -->
-          <template v-slot:[`item.Connected`]="{ item }">
-            <div class="text-no-wrap">
-              <span>{{ item.Connected }}/{{ item.MaxConnections }}</span>
-              <span>
-                <v-icon v-if="item.IsPassword">mdi-lock</v-icon>
-              </span>
-            </div>
-          </template>
-
-          <!-- 模式/风格 -->
-          <template v-slot:[`item.Mode`]="{ item }">
-            <span class="text-no-wrap">
-              {{ item.Mode == null || item.Mode.length == 0 ? $t("unknown") : translate(item.Mode) }}
-              /
-              {{ translate(item.Intent ?? $t("unknown")) }}
-            </span>
-          </template>
-
-          <!-- 天数 -->
-          <template v-slot:[`item.DaysInfo`]="{ item }">
-            <span>{{ item.DaysInfo?.Day }}</span>
-          </template>
-
-          <!-- 季节 -->
-          <template v-slot:[`item.Season`]="{ item }">
-            <span class="text-no-wrap">
-              <span v-if="item.Season != null && item.Season != ''">
-                {{ translate(CalcSeasonState(item.DaysInfo) + item.Season ?? $t("unknown")) }}
-              </span>
-              <span v-else class="no-data-text">{{ $t("unknown") }}</span>
-              <span v-if="item.DaysInfo != null"> ({{ item.DaysInfo.Day }}{{ $t("home.days") }}) </span>
-            </span>
-          </template>
-
-          <!-- 平台 -->
-          <template v-slot:[`item.Platform`]="{ item }">
-            <platform-icon :platform="item.Platform"></platform-icon>
-          </template>
-
-          <!-- 其它 -->
-          <template v-slot:[`item.IsDedicated`]="{ item }">
-            <v-icon v-if="item.IsDedicated == true" :color="item.IsKleiOfficial ? 'orange' : ''"
-              >mdi-server-network</v-icon
-            >
-            <v-icon v-if="item.IsPvp == true">mdi-sword-cross</v-icon>
-          </template>
-
-          <!-- 地址 -->
-          <template v-slot:[`item.Address`]="{ item }">
-            <v-chip
-              :link="true"
-              variant="text"
-              @click="
-                copy(`c_connect(\x22${item.Address.IP}\x22,${item.Port})`);
-                alert.show($t('home.copyConnectionCode'), 'success');
-              "
-            >
-              {{ item.Address.IP }}:{{ item.Port }}
-            </v-chip>
-          </template>
-
-          <!-- 玩家列表 -->
-          <template v-slot:[`item.Players`]="{ item }">
-            <player-clip v-for="player in item.Players" :key="player.NetId" :platform="item.Platform" :player="player">
-            </player-clip>
-          </template>
-        </v-data-table-server>
-      </v-card>
-
-      <!-- 服务器详细信息弹窗 -->
-      <server-card
-        v-model:is-show="ServerCardInfo.show"
-        :indexer="ServerCardInfo.indexer"
-        v-model:query-type="ServerCardInfo.type"
-        @update:is-show="
-          v => {
-            if (!v) webHash.SetString(Names.Server, null);
-          }
-        "
-      >
-      </server-card>
-    </v-container>
-  </v-main>
-  <app-footer></app-footer>
-  <!-- </v-responsive> -->
-</template>
-
 <script setup lang="ts">
 import { reactive } from "vue";
 import AppFooter from "@/components/AppFooter.vue";
-import { copy, CalcSeasonState, delay } from "@/scripts/utils";
+import { copy, CalcSeasonState, delay, GetCountryImageUrl } from "@/scripts/utils";
 import AppNavigation from "@/components/AppNavigation.vue";
 import { GetServerListAsync, GetTotalAsync } from "@/scripts/api";
 import { Platform } from "@/scripts/models";
@@ -546,6 +208,324 @@ async function LoadNextPage() {
 
 Initialize();
 </script>
+
+<template>
+  <!-- <v-responsive> -->
+
+  <!-- 左侧导航栏 -->
+  <AppNavigation v-model:is-show="uiState.isNavShow"></AppNavigation>
+
+  <!-- 顶栏 -->
+  <VAppBar class="my-elevation">
+    <VAppBarNavIcon @click="uiState.isNavShow = true"> </VAppBarNavIcon>
+    <VAppBarTitle>{{ $t("title") }}</VAppBarTitle>
+
+    <!-- V1 -->
+    <VBtn :icon="true" @click="OpenV1()" style="font-weight: bold; color: #707570">
+      <MainIcon :size="16">
+        <span>V₁</span>
+      </MainIcon>
+    </VBtn>
+
+    <!-- Mods页面 -->
+    <VBtn @click="$router.push('/mods')" :icon="true">
+      <MainIcon>mdi-bee</MainIcon>
+    </VBtn>
+
+    <!-- api页面 -->
+    <VBtn :icon="true" @click="router.push('/api')">
+      <MainIcon>mdi-api</MainIcon>
+    </VBtn>
+
+    <!-- 历史服务器管理 -->
+    <VBtn :icon="true">
+      <MainIcon>mdi-clock-outline</MainIcon>
+      <VMenu activator="parent" :close-on-content-click="false" v-model="uiState.isServerHistoryShow">
+        <VCard>
+          <VList>
+            <!-- Header -->
+            <VListItem style="color: orange; font-weight: bold; font-size: 22px">
+              <span>{{ $t("home.history") }}</span>
+              <template v-slot:[`append`]>
+                <VBtn variant="text" :icon="true" @click="ServerHistoryManager.Clear()">
+                  <MainIcon :size="28">mdi-delete</MainIcon>
+                </VBtn>
+              </template>
+            </VListItem>
+
+            <!-- List -->
+            <VListItem
+              v-for="(item, index) in ServerHistoryManager.history"
+              v-bind:key="item.RowId"
+              @click="
+                ServerHistoryManager.ToTop(item);
+                ShowServerCard(ServerCardDataType.HistoryItem, item);
+                uiState.isServerHistoryShow = false;
+              "
+            >
+              <VListItemTitle>{{ item.Name }}</VListItemTitle>
+              <template v-slot:[`append`]>
+                <VBtn :icon="true" @click="ServerHistoryManager.RemoveAt(index)" variant="text">
+                  <MainIcon :size="24">mdi-close</MainIcon>
+                </VBtn>
+              </template>
+            </VListItem>
+          </VList>
+        </VCard>
+      </VMenu>
+    </VBtn>
+
+    <!-- 语言选项 -->
+    <VBtn :icon="true">
+      <MainIcon>mdi-translate</MainIcon>
+      <VMenu activator="parent">
+        <VList>
+          <!-- 遍历所有语言 -->
+          <VListItem v-for="item in languages" v-bind:key="item.key" @click="appStore.switchLanguage(item.key)">
+            <VListItemTitle>{{ item.name }}</VListItemTitle>
+          </VListItem>
+        </VList>
+      </VMenu>
+    </VBtn>
+
+    <!-- 主题选项 -->
+    <VBtn :icon="true">
+      <MainIcon>mdi-theme-light-dark</MainIcon>
+      <VMenu activator="parent">
+        <VList>
+          <VListItem @click="appStore.switchTheme('light')">
+            <MainIcon>mdi-lightbulb-on-10</MainIcon>
+            <span> Light</span>
+          </VListItem>
+          <VListItem @click="appStore.switchTheme('dark')">
+            <MainIcon>mdi-brightness-4</MainIcon>
+            <span> Dark</span>
+          </VListItem>
+        </VList>
+      </VMenu>
+    </VBtn>
+  </VAppBar>
+
+  <!-- 主要内容 -->
+  <VMain>
+    <VContainer :fluid="false">
+      <!-- 卡片包裹 -->
+      <VCard density="compact" class="rounded-lg my-elevation">
+        <!-- 工具栏 -->
+        <AppToolbar
+          v-model:input="data.input"
+          @update:input="
+            v => {
+              if (v != null && v != '') {
+                webHash.SetString(Names.Name, v);
+              } else {
+                webHash.SetString(Names.Name, null);
+              }
+            }
+          "
+          @fetch="QueryAsync()"
+          v-model:search-type="data.searchType"
+          @reset-filter="data.options.sortBy.length = 0"
+        ></AppToolbar>
+
+        <!-- 服务器列表 -->
+        <VDataTableServer
+          style="font-size: 16px !important"
+          :items-per-page="data.options.itemsPerPage"
+          v-model:options="data.options"
+          :items-per-page-text="$t('home.itemsPerPage') + ':'"
+          :items-per-page-options="[10, 20, 50, 100]"
+          :items-length="listInfo.response?.TotalCount ?? 0"
+          :headers="dynamicTabHeader as (typeof VDataTableServer)['headers']"
+          :items="listInfo.response?.List"
+          :no-data-text="$t('home.noData')"
+          :loading="data.isLoading"
+          :loading-text="$t('home.loading')"
+          :multi-sort="true"
+          @update:sort-by="
+            v => {
+              data.options.sortBy = v;
+              QueryAsync();
+            }
+          "
+          class="border-opacity"
+        >
+          <!-- 页脚 -->
+          <!-- <template v-slot:bottom>
+              <div style="display: flex;align-items: center;">
+                <div style="flex: 1;">
+                  <v-pagination
+                    v-model="data.options.page"
+                    :length="(data.data?.MaxPageIndex ?? 0) + 1"
+                    @update:model-value="QueryAsync()"
+                  ></v-pagination>
+                </div>
+                <div class="mr-2" style="display: flex;align-items: center;">
+                  <span class="text-no-wrap ml-1">当前页数量:{{ data.data?.Count ?? 0 }}</span>
+                  <v-btn>按钮</v-btn>
+                  <v-combobox :items="[10,20,50,100]" variant="plain"></v-combobox>
+                </div>
+              </div>
+            </template> -->
+
+          <!-- 页脚2 -->
+          <template v-slot:bottom>
+            <div class="d-flex align-center ml-2 mr-4 table-footer">
+              <!-- <span class="mr-3">{{ state.list?.Count ?? 0 }}</span> -->
+              <!-- <span class="ml-2 mr-2"> of </span> -->
+              <div class="ml-3">
+                <!-- 页数选择 -->
+                <VPagination
+                  active-color="#D459F6"
+                  :length="(listInfo.response?.MaxPageIndex ?? 0) + 1"
+                  v-model="data.options.page"
+                  rounded="circle"
+                  :show-first-last-page="mediaQuery.sm ? false : true"
+                  :total-visible="mediaQuery.sm ? 3 : 5"
+                  @update:model-value="QueryAsync()"
+                ></VPagination>
+              </div>
+              <!-- <span class="ml-2 mr-2">{{ $t("home.itemsPerPage") }}: </span> -->
+              <div class="d-flex justify-end table-footer-item2">
+                <div class="ml-3 mr-3">
+                  <VSelect
+                    color="#555577"
+                    rounded="lg"
+                    v-model="data.options.itemsPerPage"
+                    @update:model-value="v => QueryAsync()"
+                    :items="[10, 20, 50, 100]"
+                    :hide-details="true"
+                    variant="outlined"
+                    density="compact"
+                  >
+                  </VSelect>
+                </div>
+                <div>
+                  <VBtn @click="LoadNextPage()" variant="text" :icon="true">
+                    <VIcon :size="24">mdi-transfer-down</VIcon>
+                  </VBtn>
+                </div>
+                <!-- <span class="ml-3 mr-3" style="font-size: 20px">
+                  Total: {{ state.list?.TotalCount ?? 0 }}
+                </span> -->
+              </div>
+            </div>
+          </template>
+
+          <!-- 服务器名 -->
+          <template v-slot:[`item.Name`]="{ item }">
+            <div class="d-flex align-center">
+              <div>
+                <VImg :src="GetCountryImageUrl(item)" width="30" class="mr-2" />
+                <!-- <v-icon icon="logo.ico"></v-icon> -->
+              </div>
+              <div>
+                <span>{{ item.Name }}</span>
+              </div>
+              <div>
+                <!-- 打开服务器详细信息 -->
+                <VBtn
+                  :icon="true"
+                  variant="flat"
+                  size="35"
+                  @click="
+                    ShowServerCard(ServerCardDataType.ServerInfo, item);
+                    ServerHistoryManager.AddHistory(item);
+                  "
+                >
+                  <MainIcon size="20">mdi-link-variant</MainIcon>
+                </VBtn>
+              </div>
+            </div>
+          </template>
+
+          <!-- 连接数 -->
+          <template v-slot:[`item.Connected`]="{ item }">
+            <div class="text-no-wrap">
+              <span>{{ item.Connected }}/{{ item.MaxConnections }}</span>
+              <span>
+                <MainIcon v-if="item.IsPassword" :size="16">mdi-lock</MainIcon>
+              </span>
+            </div>
+          </template>
+
+          <!-- 模式/风格 -->
+          <template v-slot:[`item.Mode`]="{ item }">
+            <span class="text-no-wrap">
+              {{ item.Mode == null || item.Mode.length == 0 ? $t("unknown") : translate(item.Mode) }}
+              /
+              {{ translate(item.Intent ?? $t("unknown")) }}
+            </span>
+          </template>
+
+          <!-- 天数 -->
+          <template v-slot:[`item.DaysInfo`]="{ item }">
+            <span>{{ item.DaysInfo?.Day }}</span>
+          </template>
+
+          <!-- 季节 -->
+          <template v-slot:[`item.Season`]="{ item }">
+            <span class="text-no-wrap">
+              <span v-if="item.Season != null && item.Season != ''">
+                {{ translate(CalcSeasonState(item.DaysInfo) + (item.Season ?? $t("unknown"))) }}
+              </span>
+              <span v-else class="no-data-text">{{ $t("unknown") }}</span>
+              <span v-if="item.DaysInfo != null"> ({{ item.DaysInfo.Day }}{{ $t("home.days") }}) </span>
+            </span>
+          </template>
+
+          <!-- 平台 -->
+          <template v-slot:[`item.Platform`]="{ item }">
+            <PlatformIcon :platform="item.Platform"></PlatformIcon>
+          </template>
+
+          <!-- 其它 -->
+          <template v-slot:[`item.IsDedicated`]="{ item }">
+            <MainIcon v-if="item.IsDedicated == true" :color="item.IsKleiOfficial ? 'orange' : ''" :size="16">
+              mdi-server-network
+            </MainIcon>
+            <MainIcon v-if="item.IsPvp == true" :size="16">mdi-sword-cross</MainIcon>
+          </template>
+
+          <!-- 地址 -->
+          <template v-slot:[`item.Address`]="{ item }">
+            <VChip
+              :link="true"
+              variant="text"
+              @click="
+                copy(`c_connect(\x22${item.Address.IP}\x22,${item.Port})`);
+                alert.show($t('home.copyConnectionCode'), 'success');
+              "
+            >
+              {{ item.Address.IP }}:{{ item.Port }}
+            </VChip>
+          </template>
+
+          <!-- 玩家列表 -->
+          <template v-slot:[`item.Players`]="{ item }">
+            <PlayerClip v-for="player in item.Players" :key="player.NetId" :platform="item.Platform" :player="player">
+            </PlayerClip>
+          </template>
+        </VDataTableServer>
+      </VCard>
+
+      <!-- 服务器详细信息弹窗 -->
+      <ServerCard
+        v-model:is-show="ServerCardInfo.show"
+        :indexer="ServerCardInfo.indexer"
+        v-model:query-type="ServerCardInfo.type"
+        @update:is-show="
+          v => {
+            if (!v) webHash.SetString(Names.Server, null);
+          }
+        "
+      >
+      </ServerCard>
+    </VContainer>
+  </VMain>
+  <AppFooter></AppFooter>
+  <!-- </v-responsive> -->
+</template>
 
 <style lang="scss">
 // 禁止表格标题自动换行

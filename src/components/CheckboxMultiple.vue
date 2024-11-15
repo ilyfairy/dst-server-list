@@ -1,15 +1,15 @@
 <template>
-  <v-row>
+  <VRow>
     <template v-for="opt in options" :key="GetStringTranslateValue(opt)">
-    <v-checkbox
+    <VCheckbox
       v-model="selected"
       @update:model-value="$emit('update:modelValue', selected)"
       :label="opt.toString()"
       :value="opt.value"
     >
-    </v-checkbox>
+    </VCheckbox>
   </template>
-  </v-row>
+  </VRow>
 </template>
 
 <script setup lang="ts">

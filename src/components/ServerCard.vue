@@ -1,35 +1,35 @@
 <template>
-  <v-dialog :model-value="isShow" @update:model-value="v => emit('update:isShow', v)">
-    <v-card elevation="4" rounded="xl" class="v-container">
+  <VDialog :model-value="isShow" @update:model-value="v => emit('update:isShow', v)">
+    <VCard elevation="4" rounded="xl" class="v-container">
       <!-- 标题 -->
-      <v-card-title class="text-center">
+      <VCardTitle class="text-center">
         <span class="headline">{{ server?.Name }}</span>
         <span class="ml-1" v-if="data.titleSuffix != ''">{{ data.titleSuffix }}</span>
-        <main-icon v-if="server?.IsPassword == true" :size="22">mdi-lock</main-icon>
-        <v-progress-circular v-if="data.loading" :indeterminate="data.loading" :size="22"></v-progress-circular>
-      </v-card-title>
+        <MainIcon v-if="server?.IsPassword == true" :size="22">mdi-lock</MainIcon>
+        <VProgressCircular v-if="data.loading" :indeterminate="data.loading" :size="22"></VProgressCircular>
+      </VCardTitle>
 
       <!-- 标签页 -->
       <div>
-        <v-tabs v-if="tabs.length > 1" :grow="true" v-model="data.tabSelected" density="compact">
-          <v-tab v-for="item in tabs" :key="item.name" :value="item.name" color="primary">{{ item.label }}</v-tab>
-        </v-tabs>
+        <VTabs v-if="tabs.length > 1" :grow="true" v-model="data.tabSelected" density="compact">
+          <VTab v-for="item in tabs" :key="item.name" :value="item.name" color="primary">{{ item.label }}</VTab>
+        </VTabs>
       </div>
 
       <!-- 内容 -->
       <div>
-        <v-window v-if="server != null && server.Address != null" v-model="data.tabSelected" style="min-height: 100px">
+        <VWindow v-if="server != null && server.Address != null" v-model="data.tabSelected" style="min-height: 100px">
           <!-- 主页 -->
-          <v-window-item :value="allTabs.server.name">
+          <VWindowItem :value="allTabs.server.name">
             <div class="pt-6 pl-6 pr-6">
-              <v-row>
+              <VRow>
                 <!-- 地址端口 -->
-                <v-col cols="12" sm="6" class="label-box">
+                <VCol cols="12" sm="6" class="label-box">
                   <div class="label-title d-flex" style="align-items: center">
                     {{ $t("home.tableHeader.address") }}:
                   </div>
                   <div class="label-item" style="margin-left: -10px; /*往左边移动一点点 */">
-                    <v-chip
+                    <VChip
                       variant="text"
                       style="font-size: 20px"
                       @click="
@@ -38,16 +38,16 @@
                       "
                     >
                       {{ server.Address.IP }}:{{ server.Port }}
-                    </v-chip>
+                    </VChip>
                   </div>
                   <main-icon v-if="server.IsDedicated == true" :color="server.IsKleiOfficial ? 'orange' : ''" :size="20"
                     >mdi-server-network</main-icon
                   >
                   <span v-if="server.Nat == 7">({{ $t("dst.privateNetwork") }})</span>
-                </v-col>
+                </VCol>
 
                 <!-- 描述 -->
-                <v-col cols="12" sm="6" class="label-box">
+                <VCol cols="12" sm="6" class="label-box">
                   <div class="label-title">{{ $t("dst.description") }}:</div>
                   <div class="label-item">
                     <span v-if="server.Description == null || server.Description == ''" class="no-data-text">{{
@@ -55,10 +55,10 @@
                     }}</span>
                     <span v-else> {{ server.Description }}</span>
                   </div>
-                </v-col>
+                </VCol>
 
                 <!-- 季节 -->
-                <v-col cols="12" sm="6" class="label-box">
+                <VCol cols="12" sm="6" class="label-box">
                   <div class="label-title">{{ $t("home.tableHeader.season") }}:</div>
                   <div class="label-item">
                     <span v-if="server.DaysInfo != null" class="mr-3">{{
@@ -70,10 +70,10 @@
                     <span v-else class="no-data-text">{{ $t("unknown") }}</span>
                     <span v-if="server.DaysInfo != null">{{ GetSeasonDaysString(server.DaysInfo) }}</span>
                   </div>
-                </v-col>
+                </VCol>
 
                 <!-- 模式风格 -->
-                <v-col cols="12" sm="6" class="label-box">
+                <VCol cols="12" sm="6" class="label-box">
                   <div class="label-title">{{ $t("dst.modestyle") }}:</div>
                   <div class="label-item">
                     <span v-if="server.Mode != null">{{ translate(server.Mode) }}</span>
@@ -82,22 +82,22 @@
                     <span v-if="server.Intent != null">{{ translate(server.Intent) }}</span>
                     <span v-else class="no-data-text">{{ $t("unknown") }}</span>
                   </div>
-                </v-col>
+                </VCol>
 
                 <!-- 平台 -->
-                <v-col cols="12" sm="6" class="label-box">
+                <VCol cols="12" sm="6" class="label-box">
                   <div class="label-title">{{ $t("home.tableHeader.platform") }}:</div>
                   <div class="label-item">
-                    <platform-icon :platform="server.Platform"></platform-icon>
+                    <PlatformIcon :platform="server.Platform"></PlatformIcon>
                   </div>
                   <div v-if="server.SteamClanId != null" class="md-2">
-                    <v-chip @click="OpenSteamGroup(server.SteamClanId)">{{ $t("dst.steamGroup") }}</v-chip>
+                    <VChip @click="OpenSteamGroup(server.SteamClanId)">{{ $t("dst.steamGroup") }}</VChip>
                     <!-- <v-btn @click="OpenSteamGroup(server.SteamClanId)">Steam群组</v-btn> -->
                   </div>
-                </v-col>
+                </VCol>
 
                 <!-- 其它 -->
-                <v-col cols="12" sm="12" class="label-box d-flex flex-wrap">
+                <VCol cols="12" sm="12" class="label-box d-flex flex-wrap">
                   <!-- 版本 -->
                   <div class="mr-10">
                     <span class="label-other-title">{{ $t("dst.version") }}:</span>
@@ -117,46 +117,47 @@
                   <div class="d-flex flex-wrap">
                     <div class="mr-10">
                       <span class="label-other-title">PvP:</span>
-                      <main-icon v-if="server.IsPvp" :size="22">mdi-sword-cross</main-icon>
-                      <main-icon v-else :size="22">mdi-close</main-icon>
+                      <MainIcon v-if="server.IsPvp" :size="22">mdi-sword-cross</MainIcon>
+                      <MainIcon v-else :size="22">mdi-close</MainIcon>
                     </div>
                   </div>
                   <!-- 是否仅允许好友加入 -->
                   <div v-if="server.IsFriendsOnly == true" class="d-flex flex-wrap">
                     <div class="mr-10">
                       <!-- <span class="label-other-title">仅允许好友加入</span> -->
-                      <v-btn variant="tonal">{{ $t("dst.fo") }}</v-btn>
+                      <VBtn variant="tonal">{{ $t("dst.fo") }}</VBtn>
                       <!-- <v-icon :size="22">mdi-check-bold</v-icon> -->
                     </div>
                   </div>
                   <div v-if="server.IsServerPaused == true" class="d-flex flex-wrap">
                     <div class="mr-10">
                       <!-- <span class="label-other-title">世界已暂停</span> -->
-                      <v-btn variant="tonal">{{ $t("dst.serverPaused") }}</v-btn>
+                      <VBtn variant="tonal">{{ $t("dst.serverPaused") }}</VBtn>
                       <!-- <v-icon :size="22">mdi-check-bold</v-icon> -->
                     </div>
                   </div>
-                </v-col>
-              </v-row>
+                </VCol>
+              </VRow>
 
               <!-- Tags标签 -->
               <div>
                 <p class="mt-8 mb-1 label-title">{{ $t("dst.tags") }}:</p>
                 <div class="label-item">
                   <template v-for="tag in server.Tags" :key="tag">
-                    <v-chip
+                    <VChip
                       class="mr-2 mt-2 text-color"
                       variant="elevated"
                       @click="null"
                       @click.right="v => tagsRightClick(v as PointerEvent, tag)"
-                      >{{ tag }}</v-chip
                     >
+                      {{ tag }}
+                    </VChip>
                   </template>
                 </div>
               </div>
 
               <!-- Tags右键菜单 -->
-              <v-menu
+              <VMenu
                 v-model="data.tagsContextMenu.show"
                 :open-on-click="false"
                 :style="{
@@ -164,10 +165,10 @@
                   top: data.contextPosition.y + 'px',
                 }"
               >
-                <v-list>
-                  <v-list-item @click="SearchTag()"> {{ $t("home.searchTags") }} </v-list-item>
-                </v-list>
-              </v-menu>
+                <VList>
+                  <VListItem @click="SearchTag()"> {{ $t("home.searchTags") }} </VListItem>
+                </VList>
+              </VMenu>
 
               <div class="mb-5"></div>
 
@@ -194,16 +195,16 @@
 
               <!-- 服务器历史 -->
               <div v-if="data.history && data.history.Items && data.history.Items.length > 0">
-                <player-count-timeline :list="data.history?.Items ?? null"> </player-count-timeline>
+                <PlayerCountTimeline :list="data.history?.Items ?? null"> </PlayerCountTimeline>
               </div>
             </div>
-          </v-window-item>
+          </VWindowItem>
 
           <!-- 玩家 -->
-          <v-window-item :value="allTabs.player.name">
-            <v-card-text>
+          <VWindowItem :value="allTabs.player.name">
+            <VCardText>
               <template v-for="player in server.Players" :key="player.NetId">
-                <v-btn
+                <VBtn
                   @click="OpenPlayerUrl(server.Platform, player)"
                   :color="`#${player.Color}`"
                   class="ma-2 text-none"
@@ -212,9 +213,9 @@
                   <span>{{ player.Name }}</span>
                   <span v-if="player.Prefab && player.Prefab != ''">({{ translate(player.Prefab) }})</span>
                   <span v-else>({{ $t("dst.notSelected") }})</span>
-                </v-btn>
+                </VBtn>
               </template>
-              <v-menu
+              <VMenu
                 v-model="data.playerContextMenu.show"
                 :open-on-click="false"
                 :style="{
@@ -222,22 +223,22 @@
                   top: data.contextPosition.y + 'px',
                 }"
               >
-                <v-list>
-                  <v-list-item @click="OpenPlayerUrl(server.Platform, data.playerContextMenu.playerInfo!)">
+                <VList>
+                  <VListItem @click="OpenPlayerUrl(server.Platform, data.playerContextMenu.playerInfo!)">
                     {{ $t("dst.playerProfile") }}
-                  </v-list-item>
-                  <v-list-item @click="SearchPrefab()"> {{ $t("dst.searchPrefab") }} </v-list-item>
-                  <v-list-item @click="OpenPlayerHistory()"> {{ $t("dst.playerHistory") }} </v-list-item>
-                </v-list>
-              </v-menu>
-            </v-card-text>
-          </v-window-item>
+                  </VListItem>
+                  <VListItem @click="SearchPrefab()"> {{ $t("dst.searchPrefab") }} </VListItem>
+                  <VListItem @click="OpenPlayerHistory()"> {{ $t("dst.playerHistory") }} </VListItem>
+                </VList>
+              </VMenu>
+            </VCardText>
+          </VWindowItem>
 
           <!-- 模组 -->
-          <v-window-item v-if="hasMods" :value="allTabs.mods.name">
-            <v-card-text>
+          <VWindowItem v-if="hasMods" :value="allTabs.mods.name">
+            <VCardText>
               <template v-for="mod in server.ModsInfo" :key="mod.Id">
-                <v-btn
+                <VBtn
                   class="ma-2 text-none text-color"
                   @click="ShowModInfo(server.Platform, mod)"
                   @click.right="(v: PointerEvent) => modRightClick(v, mod)"
@@ -245,11 +246,11 @@
                   <span v-if="mod.CurrentVersion != mod.NewVersion" class="no-data-text">
                     ({{ $t("dst.legacy") }})
                   </span>
-                </v-btn>
+                </VBtn>
               </template>
 
               <!-- 右键菜单 -->
-              <v-menu
+              <VMenu
                 v-model="data.modsContextMenu.show"
                 :open-on-click="false"
                 :style="{
@@ -257,54 +258,54 @@
                   top: data.contextPosition.y + 'px',
                 }"
               >
-                <v-list>
-                  <v-list-item @click="OpenModUrl(server.Platform, data.modsContextMenu.modInfo!)">
+                <VList>
+                  <VListItem @click="OpenModUrl(server.Platform, data.modsContextMenu.modInfo!)">
                     {{ $t("dst.workshopLink") }}
-                  </v-list-item>
-                  <v-list-item @click="SearchMods()"> {{ $t("search") }}... </v-list-item>
-                </v-list>
-              </v-menu>
-            </v-card-text>
-          </v-window-item>
+                  </VListItem>
+                  <VListItem @click="SearchMods()"> {{ $t("search") }}... </VListItem>
+                </VList>
+              </VMenu>
+            </VCardText>
+          </VWindowItem>
 
           <!-- 世界层级 -->
-          <v-window-item :value="allTabs.worldLevel.name">
-            <v-card-text>
+          <VWindowItem :value="allTabs.worldLevel.name">
+            <VCardText>
               <div class="world-level-container">
                 <div
                   v-for="item in [mainWorldLevel!, ...(server.Slaves ?? []), ...(server.Secondaries ?? [])]"
                   :key="item.Id"
                   class="mb-4 ml-4 mr-4"
                 >
-                  <v-card color="info" variant="tonal">
-                    <v-card-text>
-                      <p style="font-size: 22px;"># {{ item.Id }}</p>
+                  <VCard color="info" variant="tonal">
+                    <VCardText>
+                      <p style="font-size: 22px"># {{ item.Id }}</p>
                       <p>Address: {{ item.Address ?? server.Address.IP }}:{{ item.Port }}</p>
                       <p>SteamId: {{ item.SteamId }}</p>
-                    </v-card-text>
-                  </v-card>
+                    </VCardText>
+                  </VCard>
                 </div>
               </div>
-            </v-card-text>
-          </v-window-item>
-        </v-window>
+            </VCardText>
+          </VWindowItem>
+        </VWindow>
       </div>
 
       <!-- close -->
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn @click="Update(true)" rounded="lg">{{ $t("refresh") }}</v-btn>
-        <v-btn @click="emit('update:isShow', false)" rounded="lg">{{ $t("close") }}</v-btn>
-      </v-card-actions>
-    </v-card>
+      <VCardActions>
+        <VSpacer></VSpacer>
+        <VBtn @click="Update(true)" rounded="lg">{{ $t("refresh") }}</VBtn>
+        <VBtn @click="emit('update:isShow', false)" rounded="lg">{{ $t("close") }}</VBtn>
+      </VCardActions>
+    </VCard>
 
-    <v-dialog v-model="data.modinfoDialog.show" :fullscreen="true">
+    <VDialog v-model="data.modinfoDialog.show" :fullscreen="true">
       <!-- 每次open会重新加载 -->
-      <mod-info-panel :id="data.modinfoDialog.workshopId"></mod-info-panel>
+      <ModInfoPanel :id="data.modinfoDialog.workshopId"></ModInfoPanel>
 
       <!-- 关闭按钮 -->
-      <v-fab-transition>
-        <v-btn
+      <VFabTransition>
+        <VBtn
           :elevation="5"
           :icon="true"
           v-if="true"
@@ -313,13 +314,11 @@
           style="right: 25px; top: 25px"
           variant="text"
         >
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-      </v-fab-transition>
-    </v-dialog>
-
-    
-  </v-dialog>
+          <MainIcon>mdi-close</MainIcon>
+        </VBtn>
+      </VFabTransition>
+    </VDialog>
+  </VDialog>
 </template>
 
 <script setup lang="ts">
@@ -338,11 +337,12 @@ import { filter } from "@/shared/filterData";
 import { ServerCardDataType, ServerCardIndexer } from "@/shared/ServerCardInfo";
 import { HistoryItem } from "@/scripts/ServerHistoryManager";
 import { ServerDetailsResponse, ServerHistoryResponse } from "@/scripts/response-model";
-import PlatformIcon from "./PlatformIcon.vue";
 import { useAlertStore } from "@/store/alert";
 import { useListInfoStore } from "@/store/listInfo";
 import { useMediaQueryStore } from "@/store/mediaQuery";
 import CancellationTokenSource from "@/scripts/Sharp/CancellationTokenSource";
+import PlatformIcon from "./PlatformIcon.vue";
+import { VCardActions, VProgressCircular } from "vuetify/components";
 import ModInfoPanel from "./ModInfoPanel.vue";
 
 const listInfo = useListInfoStore();
@@ -374,7 +374,7 @@ const data = reactive({
   modinfoDialog: {
     show: false,
     workshopId: null as null | number,
-  }
+  },
 });
 
 const server = ref<null | DstServerAll>(null); // 获取到的服务器信息
@@ -411,7 +411,9 @@ const allTabs = computed(() => {
       name: "server",
     },
     player: {
-      label: i18n.global.t("home.tableHeader.players") + `(${server.value?.Players?.length ?? 0}/${server.value?.MaxConnections ?? 0})`,
+      label:
+        i18n.global.t("home.tableHeader.players") +
+        `(${server.value?.Players?.length ?? 0}/${server.value?.MaxConnections ?? 0})`,
       name: "players",
     },
     mods: {
@@ -458,9 +460,12 @@ watch(
 );
 
 //ModInfo子页面
-watch(() => data.modinfoDialog.show, async (newValue, oldValue) => {
-  document.documentElement.style.overflow = newValue ? "hidden" : "auto";
-});
+watch(
+  () => data.modinfoDialog.show,
+  async (newValue, oldValue) => {
+    document.documentElement.style.overflow = newValue ? "hidden" : "auto";
+  },
+);
 
 async function Update(forceUpdate: boolean = false) {
   data.cts = new CancellationTokenSource();
@@ -663,9 +668,9 @@ function SearchTag() {
 }
 
 function ShowModInfo(platform: Platform | number | null, mod: DstModInfo) {
-  if(platform == null) return;
-  if(platform != Platform.Steam){
-    if(platform != 1){
+  if (platform == null) return;
+  if (platform != Platform.Steam) {
+    if (platform != 1) {
       OpenModUrl(platform, mod);
       return;
     }

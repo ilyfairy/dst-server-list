@@ -1,37 +1,37 @@
 <template>
-  <v-card color="rgb(var(--v-modinfo-background1))">
-    <v-col class="ma-2 mt-4">
+  <VCard color="rgb(var(--v-modinfo-background1))">
+    <VCol class="ma-2 mt-4">
       <!-- 标题栏 -->
-      <v-row>
-        <v-card-title style="font-size: 35px; color: rgb(var(--v-modinfo-foreground1))">
+      <VRow>
+        <VCardTitle style="font-size: 35px; color: rgb(var(--v-modinfo-foreground1))">
           {{ data.info?.Name }}
 
           <!-- 加载中转圈圈 -->
-          <v-progress-circular
+          <VProgressCircular
             v-if="data.loading"
             :indeterminate="true"
             :size="25"
             :width="5"
             color="#AAA"
-          ></v-progress-circular>
-        </v-card-title>
+          ></VProgressCircular>
+        </VCardTitle>
 
         <!-- <v-spacer></v-spacer> -->
         <!-- <v-btn class="mr-5" icon="mdi-rotate-3d-variant" variant="flat"></v-btn> -->
-      </v-row>
+      </VRow>
 
       <!-- 内容 -->
-      <v-row>
+      <VRow>
         <!-- 左侧 -->
-        <v-col cols="9" style="margin-right: -40px">
+        <VCol cols="9" style="margin-right: -40px">
           <!-- <div @click="OpenSteamModUrl(data.info?.WorkshopId)">{{ data.info?.WorkshopId }}</div> -->
 
           <!-- 轮播图 -->
-          <v-card-text v-if="data.info && data.info.Previews && data.info.Previews.length > 0">
-            <v-carousel v-model="data.previewIndex" :show-arrows="false" :hide-delimiters="true" height="400">
-              <v-carousel-item v-for="item in data.info.Previews" :key="item.PrewviewId">
-                <v-img :src="item.Url + '?imw=500&ima=fit&impolicy=Letterbox'"></v-img>
-              </v-carousel-item>
+          <VCardText v-if="data.info && data.info.Previews && data.info.Previews.length > 0">
+            <VCarousel v-model="data.previewIndex" :show-arrows="false" :hide-delimiters="true" height="400">
+              <VCarouselItem v-for="item in data.info.Previews" :key="item.PrewviewId">
+                <VImg :src="item.Url + '?imw=500&ima=fit&impolicy=Letterbox'"></VImg>
+              </VCarouselItem>
 
               <!-- <template v-slot:prev="{ props }">
                 <v-btn icon @click="props.onClick" variant="elevated">
@@ -43,33 +43,33 @@
                   <v-icon>mdi-chevron-right</v-icon>
                 </v-btn>
               </template> -->
-            </v-carousel>
+            </VCarousel>
 
             <div class="d-flex align-center" style="flex-direction: column">
-              <v-tabs v-model="data.previewIndex" height="60" class="mt-2" style="max-width: 50vw">
-                <v-tab v-for="item in data.info.Previews" :key="item.PrewviewId" width="120" height="60">
-                  <v-img
+              <VTabs v-model="data.previewIndex" height="60" class="mt-2" style="max-width: 50vw">
+                <VTab v-for="item in data.info.Previews" :key="item.PrewviewId" width="120" height="60">
+                  <VImg
                     width="120"
                     height="60"
                     :src="item.Url + '?imw=100&ima=fit&impolicy=Letterbox'"
                     style="background-color: #55555520"
-                  ></v-img>
-                </v-tab>
-              </v-tabs>
+                  ></VImg>
+                </VTab>
+              </VTabs>
             </div>
-          </v-card-text>
+          </VCardText>
 
           <!-- 喵述 -->
-          <v-card-text style="color: rgb(var(--v-modinfo-foreground1))">
-            <v-tabs class="mb-4" v-model="data.mainIndex">
-              <v-tab>{{ $t("steam.description") }}</v-tab>
-              <v-tab v-if="!data.loading">{{ $t("steam.configuration") }}</v-tab>
-            </v-tabs>
+          <VCardText style="color: rgb(var(--v-modinfo-foreground1))">
+            <VTabs class="mb-4" v-model="data.mainIndex">
+              <VTab>{{ $t("steam.description") }}</VTab>
+              <VTab v-if="!data.loading">{{ $t("steam.configuration") }}</VTab>
+            </VTabs>
 
             <!-- <div style="color: #555" class="mb-2">描述:</div> -->
-            <v-window v-model="data.mainIndex">
+            <VWindow v-model="data.mainIndex">
               <!-- 描述 -->
-              <v-window-item>
+              <VWindowItem>
                 <div ref="descriptionUI">
                   <div
                     class="steam-description"
@@ -77,10 +77,10 @@
                     v-html="FormatDescription(data.info?.Description)"
                   ></div>
                 </div>
-              </v-window-item>
+              </VWindowItem>
 
               <!-- 配置 -->
-              <v-window-item>
+              <VWindowItem>
                 <div v-if="data.info?.ConfigurationOptions == null || data.info.ConfigurationOptions.length == 0">
                   {{ $t("steam.notAnyConfig") }}
                 </div>
@@ -96,30 +96,32 @@
                     </div>
                     <div v-if="item.Object.Type == 'Option' && data.configMap[item.Object.Name]">
                       <span class="ml-1">{{ item.Object.Label || item.Object.Name }}:</span>
-                      <v-btn :icon="true" variant="text" @click="SwitchConfigItem(item, '<')">
-                        <v-icon><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>menu-left</title><path fill="#707570" d="M14,7L9,12L14,17V7Z" /></svg></v-icon>
-                      </v-btn>
-                      <span class="ml-3 mr-3">{{item.Object.Options[data.configMap[item.Object.Name].Index].Description}}</span>
-                      <v-btn :icon="true" variant="text" @click="SwitchConfigItem(item, '>')">
-                        <v-icon><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>menu-right</title><path fill="#707570" d="M10,17L15,12L10,7V17Z" /></svg></v-icon>
-                      </v-btn>
+                      <VBtn :icon="true" variant="text" @click="SwitchConfigItem(item, '<')">
+                        <MainIcon>mdi-menu-left</MainIcon>
+                      </VBtn>
+                      <span class="ml-3 mr-3">{{
+                        item.Object.Options[data.configMap[item.Object.Name].Index].Description
+                      }}</span>
+                      <VBtn :icon="true" variant="text" @click="SwitchConfigItem(item, '>')">
+                        <MainIcon>mdi-menu-right</MainIcon>
+                      </VBtn>
                     </div>
                   </div>
                 </div>
-              </v-window-item>
-            </v-window>
-          </v-card-text>
-        </v-col>
+              </VWindowItem>
+            </VWindow>
+          </VCardText>
+        </VCol>
 
         <!-- 右侧 -->
-        <v-col cols="3" class="mr-8" style="color: rgb(var(--v-modinfo-foreground2))">
-          <v-img :src="data.info?.PreviewImageUrl"></v-img>
+        <VCol cols="3" class="mr-8" style="color: rgb(var(--v-modinfo-foreground2))">
+          <VImg :src="data.info?.PreviewImageUrl"></VImg>
 
           <div class="d-flex justify-center mt-2 mb-2">
-            <v-btn @click="OpenSteamModUrl(id ?? data.info?.WorkshopId)" variant="text">
+            <VBtn @click="OpenSteamModUrl(id ?? data.info?.WorkshopId)" variant="text">
               WorkshopId: {{ id ?? data.info?.WorkshopId }}
               <!-- <v-tooltip activator="parent"> 访问Steam创意工坊 </v-tooltip> -->
-            </v-btn>
+            </VBtn>
           </div>
 
           <div>
@@ -146,7 +148,7 @@
           <!-- 评分 -->
           <div v-if="data.info?.VoteData" class="mt-2">
             <div>{{ data.info.VoteData.VotesUp + data.info.VoteData.VotesDown }}个评价</div>
-            <v-rating
+            <VRating
               :model-value="
                 (data.info.VoteData.VotesUp / (data.info.VoteData.VotesUp + data.info.VoteData.VotesDown)) * 5
               "
@@ -156,16 +158,16 @@
               active-color="green"
               :half-increments="true"
             >
-            </v-rating>
+            </VRating>
           </div>
 
           <!-- 标签 -->
           <div v-if="data.info?.Tags" class="mt-3">
             <div>Tags:</div>
             <div style="margin-left: -5px">
-              <v-chip v-for="tag in data.info?.Tags" :key="tag" class="ma-1" @click="null">
+              <VChip v-for="tag in data.info?.Tags" :key="tag" class="ma-1" @click="null">
                 {{ tag }}
-              </v-chip>
+              </VChip>
             </div>
           </div>
 
@@ -240,10 +242,10 @@
               <div class="view-label">{{ $t("steam.currentFavorites") }}</div>
             </div>
           </div>
-        </v-col>
-      </v-row>
-    </v-col>
-  </v-card>
+        </VCol>
+      </VRow>
+    </VCol>
+  </VCard>
 </template>
 
 <script setup lang="ts">

@@ -1,13 +1,13 @@
 <template>
-  <v-theme-provider :theme="app.theme">
+  <VThemeProvider :theme="app.theme">
     <!-- <v-locale-provider :locale="state.lang"> -->
-    <v-app>
-      <router-view> </router-view>
+    <VApp>
+      <RouterView> </RouterView>
 
-      <scroll-to-top-button />
+      <ScrollToTopButton />
 
       <!-- 底部提示(Toast) -->
-      <v-snackbar
+      <VSnackbar
         v-model:model-value="alert.isShow"
         :timeout="1500"
         variant="elevated"
@@ -16,14 +16,14 @@
       >
         {{ alert.message }}
         <template v-slot:actions>
-          <v-btn variant="text" @click="alert.isShow = false">
+          <VBtn variant="text" @click="alert.isShow = false">
             {{ $t("close") }}
-          </v-btn>
+          </VBtn>
         </template>
-      </v-snackbar>
-    </v-app>
+      </VSnackbar>
+    </VApp>
     <!-- </v-locale-provider> -->
-  </v-theme-provider>
+  </VThemeProvider>
 </template>
 
 <script setup lang="ts">
@@ -31,6 +31,7 @@ import ScrollToTopButton from "@/components/ScrollToTopButton.vue";
 import { useSettingsStore } from "@/store/settings";
 import { useAlertStore } from "@/store/alert";
 import { useAppStore } from "@/store/app";
+import { VSnackbar, VThemeProvider } from "vuetify/components";
 
 const settings = useSettingsStore();
 const alert = useAlertStore();

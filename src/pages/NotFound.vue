@@ -1,6 +1,6 @@
 <template>
   <div style="width: 100vw; height: 100vh; background-color: #017be0; color: white">
-    <v-container class="mt-10">
+    <VContainer class="mt-10">
       <p style="font-size: 100px">:(</p>
       <p>{{ $t("404.p1") }}</p>
       <p>{{ $t("404.p2") }}</p>
@@ -18,7 +18,7 @@
           <p>{{ $t("404.stopCode") }}: NOT_FOUND_EXCEPTION</p>
         </div>
       </div>
-    </v-container>
+    </VContainer>
   </div>
 </template>
 

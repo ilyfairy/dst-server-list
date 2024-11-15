@@ -1,5 +1,5 @@
 <template>
-  <v-text-field
+  <VTextField
     @update:model-value="v => inputUpdated(v)"
     :model-value="props.modelValue"
     @keydown.enter="select()"
@@ -12,7 +12,7 @@
     density="compact"
     variant="outlined"
   >
-    <v-menu
+    <VMenu
       activator="parent"
       location="bottom"
       v-model="data.showCompletion"
@@ -22,17 +22,17 @@
           <v-checkbox :label="item.toString()"> </v-checkbox>
         </v-row> -->
 
-      <v-list
+      <VList
         v-if="preOptionsComputed != null && preOptionsComputed.length > 0"
         density="compact"
         max-height="50vh"
       >
-        <v-list-item
+        <VListItem
           v-for="item in preOptionsComputed.slice(0, 100)"
           :key="item.value"
           @click="isSelected(item) ? remove(item) : select(item)"
         >
-          <v-checkbox
+          <VCheckbox
             density="compact"
             :hide-spin-buttons="true"
             :hide-details="true"
@@ -41,18 +41,19 @@
             @update:model-value="v => (v == true ? select(item) : remove(item))"
             :tabindex="-1"
           >
-          </v-checkbox>
-        </v-list-item>
-        <v-list-item v-if="preOptionsComputed.length > 100"> ... </v-list-item>
-      </v-list>
-    </v-menu>
-  </v-text-field>
+          </VCheckbox>
+        </VListItem>
+        <VListItem v-if="preOptionsComputed.length > 100"> ... </VListItem>
+      </VList>
+    </VMenu>
+  </VTextField>
 </template>
 
 <script setup lang="ts">
 import { computed, reactive, ref, watch } from "vue";
 import { CustomOptionValue } from "@/scripts/utils";
 import * as utils from "@/scripts/utils";
+import { VCheckbox } from "vuetify/components";
 
 const splitRegex: RegExp = /[,;|]/; // 分隔符 ; , |
 const splitChars = "|;,";
@@ -141,7 +142,7 @@ const preOptionsComputed = computed(() => {
     );
   }
 
-  allOptions = allOptions.concat([]).sort((v, v2) => {
+  allOptions = allOptions.concat([]).toArray().sort((v, v2) => {
     const a = isStartWith(v) ? 1 : -1;
     const b = isStartWith(v2) ? 1 : -1;
 

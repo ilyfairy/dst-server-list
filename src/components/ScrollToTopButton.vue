@@ -1,6 +1,6 @@
 <template>
-  <v-fab-transition>
-    <v-btn
+  <VFabTransition>
+    <VBtn
       :elevation="5"
       :icon="true"
       v-if="enabled"
@@ -9,14 +9,15 @@
       class="position-fixed"
       style="right: 30px; bottom: 20vh"
     >
-      <v-icon color="#707570">mdi-chevron-up</v-icon>
-    </v-btn>
-  </v-fab-transition>
+      <MainIcon color="#707570">mdi-chevron-up</MainIcon>
+    </VBtn>
+  </VFabTransition>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
 import { onMounted } from "vue";
+import { VFabTransition } from "vuetify/components";
 
 const enabled = ref(false);
 

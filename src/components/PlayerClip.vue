@@ -1,7 +1,7 @@
 <template>
-  <v-chip link @click="openPlayerUrl()" style="margin: 2px;">
+  <VChip link @click="openPlayerUrl()" style="margin: 2px;">
     <span>{{ player.Name }}</span>
-  </v-chip>
+  </VChip>
 </template>
 
 <script setup lang="ts">

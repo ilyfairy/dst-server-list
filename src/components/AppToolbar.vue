@@ -1,65 +1,58 @@
 <template>
   <div>
-    <v-toolbar id="toob" :flat="true" color="transparent" class="text-caption">
+    <VToolbar id="toob" :flat="true" color="transparent" class="text-caption">
       <div class="table-title"></div>
-      <v-toolbar-title v-if="mediaQuery.sm == false">{{ $t("home.serverList") }}</v-toolbar-title>
-      <v-spacer v-if="mediaQuery.sm == false"></v-spacer>
+      <VToolbarTitle v-if="mediaQuery.sm == false">{{ $t("home.serverList") }}</VToolbarTitle>
+      <VSpacer v-if="mediaQuery.sm == false"></VSpacer>
 
       <!-- 输入框 -->
-      <v-text-field
+      <VTextField
         :placeholder="placeholder"
         :hide-details="true"
         :single-line="true"
         :model-value="input"
         @update:model-value="OnInputChanged"
         @keydown.enter="emit('fetch')"
-        class="mr-1 search-box"
+        class="mr-1 search-box rounded-lg"
         :clearable="true"
         variant="solo"
         density="compact"
         :flat="true"
       >
         <template v-slot:prepend-inner>
-          <v-icon>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <title>magnify</title>
-            <path fill="#707570" d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
-          </svg>
-          </v-icon>
+          <MainIcon>mdi-magnify</MainIcon>
         </template>
-      </v-text-field>
+      </VTextField>
 
       <!-- 过滤按钮 -->
-      <v-btn
+      <VBtn
         :icon="true"
         @click="
           ui.isShowFilter = !ui.isShowFilter;
           InitDynamicOptions();
         "
       >
-        <v-icon>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>filter-variant</title><path fill="#707570" d="M6,13H18V11H6M3,6V8H21V6M10,18H14V16H10V18Z" /></svg>
-        </v-icon>
-      </v-btn>
-      <v-btn :icon="true" @click="ResetFilter()">
-        <v-icon><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>filter-variant-remove</title><path fill="#707570" d="M21 8H3V6H21V8M13.81 16H10V18H13.09C13.21 17.28 13.46 16.61 13.81 16M18 11H6V13H18V11M21.12 15.46L19 17.59L16.88 15.46L15.47 16.88L17.59 19L15.47 21.12L16.88 22.54L19 20.41L21.12 22.54L22.54 21.12L20.41 19L22.54 16.88L21.12 15.46Z" /></svg></v-icon>
-      </v-btn>
+        <MainIcon>mdi-filter-variant</MainIcon>
+      </VBtn>
+      <VBtn :icon="true" @click="ResetFilter()">
+        <MainIcon>mdi-filter-variant-remove</MainIcon>
+      </VBtn>
 
-      <v-btn :icon="true" @click="ui.isShowSettings = true">
-        <v-icon><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>tune</title><path fill="#707570" d="M3,17V19H9V17H3M3,5V7H13V5H3M13,21V19H21V17H13V15H11V21H13M7,9V11H3V13H7V15H9V9H7M21,13V11H11V13H21M15,9H17V7H21V5H17V3H15V9Z" /></svg></v-icon>
-      </v-btn>
-    </v-toolbar>
+      <VBtn :icon="true" @click="ui.isShowSettings = true">
+        <MainIcon>mdi-tune</MainIcon>
+      </VBtn>
+    </VToolbar>
 
-    <v-expand-transition>
+    <VExpandTransition>
       <!-- 里面的组件消失时会自动进行高度的过渡动画 -->
       <div v-show="ui.isShowFilter">
-        <v-container fluid>
-          <v-row>
-            <v-col cols="12" sm="24">
+        <VContainer fluid>
+          <VRow>
+            <VCol cols="12" sm="24">
               <div class="d-flex ml-2 flex-wrap switch-container">
                 <!-- 是否搜索玩家 -->
                 <div class="mr-6">
-                  <v-switch
+                  <VSwitch
                     :label="$t('home.searchPlayer')"
                     :model-value="searchType"
                     :inset="true"
@@ -80,203 +73,203 @@
                         DelayFetch();
                       }
                     "
-                  ></v-switch>
+                  ></VSwitch>
                 </div>
 
                 <!-- 是否PVP -->
                 <div class="mr-6">
-                  <a-switch label="PvP" v-model="filter.isPvp" color="#E00" @update:model-value="DelayFetch()">
-                  </a-switch>
+                  <ASwitch label="PvP" v-model="filter.isPvp" color="#E00" @update:model-value="DelayFetch()">
+                  </ASwitch>
                 </div>
 
                 <!-- 是否启用模组 -->
                 <div class="mr-6">
-                  <a-switch label="Mods" v-model="filter.isMods" color="#A50" @update:model-value="DelayFetch()">
-                  </a-switch>
+                  <ASwitch label="Mods" v-model="filter.isMods" color="#A50" @update:model-value="DelayFetch()">
+                  </ASwitch>
                 </div>
 
                 <!-- 是否专用服务器 -->
                 <div class="mr-6">
-                  <a-switch
+                  <ASwitch
                     :label="$t('dst.dedicatedServer')"
                     v-model="filter.isDedicated"
                     color="#E70"
                     @update:model-value="DelayFetch()"
                   >
-                  </a-switch>
+                  </ASwitch>
                 </div>
 
                 <!-- 是否是最新版本 -->
                 <div class="mr-6">
-                  <a-switch
+                  <ASwitch
                     :label="$t('dst.latestVersion')"
                     v-model="filter.isLatestVersion"
                     color="#0A0"
                     @update:model-value="DelayFetch()"
                   >
-                  </a-switch>
+                  </ASwitch>
                 </div>
 
                 <!-- 服务器是否已暂停 -->
                 <div class="mr-6">
-                  <a-switch
+                  <ASwitch
                     :label="$t('dst.serverPaused')"
                     v-model="filter.isServerPaused"
                     color="#8AA"
                     @update:model-value="DelayFetch()"
                   >
-                  </a-switch>
+                  </ASwitch>
                 </div>
 
                 <!-- 仅允许好友加入 -->
                 <div class="mr-6">
-                  <a-switch
+                  <ASwitch
                     :label="$t('dst.friendsOnly')"
                     v-model="filter.isFriendsOnly"
                     color="#DD0"
                     @update:model-value="DelayFetch()"
                   >
-                  </a-switch>
+                  </ASwitch>
                 </div>
 
                 <!-- 允许新玩家加入 -->
                 <div class="mr-6">
-                  <a-switch
+                  <ASwitch
                     :label="$t('dst.allowNewPlayer')"
                     v-model="filter.isAllowNewPlayers"
                     color="#D90"
                     @update:model-value="DelayFetch()"
                   >
-                  </a-switch>
+                  </ASwitch>
                 </div>
 
                 <!-- NAT -->
                 <div class="mr-6">
-                  <a-switch
+                  <ASwitch
                     label="Password"
                     v-model="filter.isPassword"
                     color="#03A"
                     @update:model-value="DelayFetch()"
                   >
-                  </a-switch>
+                  </ASwitch>
                 </div>
 
                 <!-- NAT -->
                 <div class="mr-6">
-                  <a-switch
+                  <ASwitch
                     :label="natTypeLabel"
                     v-model="filter.natType"
                     color="#03A"
                     @update:model-value="DelayFetch()"
                   >
-                  </a-switch>
+                  </ASwitch>
                 </div>
               </div>
-            </v-col>
-          </v-row>
+            </VCol>
+          </VRow>
 
-          <v-row>
+          <VRow>
             <!-- 平台 -->
-            <v-col cols="12" sm="6">
-              <auto-completion-multiple
+            <VCol cols="12" sm="6">
+              <AutoCompletionMultiple
                 :label="$t('home.tableHeader.platform')"
                 :pre-options="options.platform"
                 v-model="filter.platformRaw"
                 @update:new-array="handles.platformHandle"
                 :is-array="true"
               >
-              </auto-completion-multiple>
-            </v-col>
+              </AutoCompletionMultiple>
+            </VCol>
 
             <!-- 季节输入 -->
-            <v-col cols="12" sm="6">
-              <auto-completion-multiple
+            <VCol cols="12" sm="6">
+              <AutoCompletionMultiple
                 :label="$t('home.tableHeader.season')"
                 :pre-options="options.season"
                 v-model="filter.seasonRaw"
                 @update:new-array="handles.seasonHandle"
                 :is-array="true"
               >
-              </auto-completion-multiple>
-            </v-col>
-          </v-row>
+              </AutoCompletionMultiple>
+            </VCol>
+          </VRow>
 
-          <v-row>
+          <VRow>
             <!-- 游戏模式 -->
-            <v-col cols="12" sm="6">
-              <auto-completion-multiple
+            <VCol cols="12" sm="6">
+              <AutoCompletionMultiple
                 :label="$t('home.tableHeader.gamemode')"
                 :pre-options="options.mode"
                 v-model="filter.modeRaw"
                 @update:new-array="handles.modeHandle"
               >
-              </auto-completion-multiple>
-            </v-col>
+              </AutoCompletionMultiple>
+            </VCol>
 
             <!-- 游戏风格 -->
-            <v-col cols="12" sm="6">
-              <auto-completion-multiple
+            <VCol cols="12" sm="6">
+              <AutoCompletionMultiple
                 :label="$t('home.tableHeader.intentx')"
                 :pre-options="options.intent"
                 v-model="filter.intentRaw"
                 @update:new-array="handles.intentHandle"
               >
-              </auto-completion-multiple>
-            </v-col>
-          </v-row>
+              </AutoCompletionMultiple>
+            </VCol>
+          </VRow>
 
-          <v-row>
+          <VRow>
             <!-- 游戏模式 -->
-            <v-col cols="12" sm="6">
-              <auto-completion-multiple
+            <VCol cols="12" sm="6">
+              <AutoCompletionMultiple
                 label="Tags"
                 :pre-options="dynamicOptions.tags"
                 v-model="filter.tagsRaw"
                 @update:new-array="handles.tagsHandle"
               >
-              </auto-completion-multiple>
-            </v-col>
+              </AutoCompletionMultiple>
+            </VCol>
 
             <!-- 玩家角色 -->
-            <v-col cols="12" sm="6">
-              <auto-completion-regex
+            <VCol cols="12" sm="6">
+              <AutoCompletionRegex
                 :label="`${$t('dst.prefab')} (Regex)`"
                 :pre-options="options.prefabs"
                 v-model="filter.prefabRaw"
                 @update:model-value="handles.prefabHandle"
               >
-              </auto-completion-regex>
-            </v-col>
-          </v-row>
+              </AutoCompletionRegex>
+            </VCol>
+          </VRow>
 
-          <v-row>
+          <VRow>
             <!-- 模组名称 -->
-            <v-col cols="12" sm="6">
-              <auto-completion-regex
+            <VCol cols="12" sm="6">
+              <AutoCompletionRegex
                 :label="`${$t('dst.modsName')} (Regex)`"
                 :pre-options="options.modsName"
                 v-model="filter.modsNameRaw"
                 @update:model-value="handles.modsNameHandle"
               >
-              </auto-completion-regex>
-            </v-col>
+              </AutoCompletionRegex>
+            </VCol>
 
             <!-- 描述 -->
-            <v-col cols="12" sm="6">
-              <auto-completion-regex
+            <VCol cols="12" sm="6">
+              <AutoCompletionRegex
                 :label="`${$t('dst.description')} (Regex)`"
                 :pre-options="[]"
                 v-model="filter.descriptionRaw"
                 @update:model-value="handles.descriptionHandle"
               >
-              </auto-completion-regex>
-            </v-col>
-          </v-row>
-        </v-container>
+              </AutoCompletionRegex>
+            </VCol>
+          </VRow>
+        </VContainer>
       </div>
-    </v-expand-transition>
+    </VExpandTransition>
 
-    <app-settings v-model:is-show="ui.isShowSettings"> </app-settings>
+    <AppSettings v-model:is-show="ui.isShowSettings"> </AppSettings>
   </div>
 </template>
 
@@ -300,6 +293,7 @@ import AppSettings from "@/components/AppSettings.vue";
 import { useListInfoStore } from "@/store/listInfo";
 import { useMediaQueryStore } from "@/store/mediaQuery";
 import "linqes";
+import { VToolbarTitle } from "vuetify/components";
 
 const listInfo = useListInfoStore();
 const mediaQuery = useMediaQueryStore();
@@ -654,7 +648,6 @@ Initialize();
 
 <style scoped lang="scss">
 .search-box {
-  border-radius: 15px;
   /* box-shadow: 0 0px 6px -3px #919eab4d, 0 2px 14px 1px #919eab4d,
     0 4px 14px 3px #919eab4d !important; */
 
