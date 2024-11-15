@@ -9,7 +9,16 @@ import vueJsx from "@vitejs/plugin-vue-jsx";
 // https://vitejs.dev/config/
 export default defineConfig({
   build: {
-    rollupOptions: {},
+    rollupOptions: {
+      output: {
+        dir: "dist",
+        entryFileNames: "assets/[name].js",
+        assetFileNames: "assets/[name].[ext]",
+        chunkFileNames: "assets/[name].[ext]",
+        manualChunks: () => "main.js",
+      },
+    },
+    chunkSizeWarningLimit: 1536,
   },
   server: {
     host: "127.0.0.1",
